@@ -193,6 +193,24 @@
         <!-- Cards das opções inseridos via JS -->
       </div>
 
+      <!-- BANNER EXPLICATIVO: FÍSICO VS DIGITAL -->
+      <div class="glass-panel" style="margin: 1.5rem 0; padding: 1.25rem; border-left: 4px solid var(--accent-cyan); background: rgba(6, 182, 212, 0.05); border-radius: var(--radius-md);">
+        <div style="display:flex; align-items:flex-start; gap:0.85rem;">
+          <span style="font-size:1.5rem; line-height:1;">💡</span>
+          <div>
+            <h5 style="color:var(--text-primary); font-weight:700; font-size:1rem; margin-bottom:0.45rem;">
+              Dúvida Frequente: O Cartaz é físico impresso ou arquivo digital?
+            </h5>
+            <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.6; margin-bottom:0.5rem;">
+              • <strong style="color:var(--accent-amber);">Modelo Cartaz (FÍSICO OBRIGATÓRIO em mãos):</strong> Exige levar no dia <strong>12/12 (Prova de Togas)</strong> uma folha impressa de tamanho <strong>A3</strong> (29,7 x 42 cm) com até 6 fotos e frase. Pode ser feita no Canva e <em>impressa em gráfica rápida</em> ou ser uma <em>colagem manual</em> com fotos em cartolina. <u>Não pode levar apenas no celular</u>, pois o formando é filmado de toga segurando a folha física na frente do corpo.
+            </p>
+            <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.6; margin:0;">
+              • <strong style="color:var(--accent-emerald);">Modelo Árvore (100% DIGITAL):</strong> Não imprime nada, não compra folha A3 e não leva nada no dia das fotos. Você monta o arquivo JPG pelo celular ou computador e sobe diretamente no site da produtora até 24/01/2027. A produtora faz a animação no telão por computação gráfica.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <!-- CÉDULA DE VOTAÇÃO OFICIAL COM VOTO ÚNICO -->
       <div class="ballot-box" id="ballot-box-container">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;">
@@ -242,9 +260,9 @@
             <label class="poll-option-card" id="opt-card-arvore" onclick="selectPollOption('arvore')">
               <input type="radio" name="poll_choice" value="arvore" id="radio-arvore" required>
               <div>
-                <strong style="color:var(--text-primary); font-size:0.95rem;">🌳 Modelo Árvore (Digital)</strong>
+                <strong style="color:var(--text-primary); font-size:0.95rem;">🌳 Modelo Árvore (100% Digital)</strong>
                 <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:0.25rem;">
-                  Você sobe um mosaico com até 6 fotos no portal. Sem gravação presencial no dia da toga.
+                  Você cria um arquivo JPG com até 6 fotos e sobe no portal até janeiro. Não precisa imprimir papel nem gravar no dia das fotos.
                 </p>
               </div>
             </label>
@@ -252,9 +270,9 @@
             <label class="poll-option-card" id="opt-card-cartaz" onclick="selectPollOption('cartaz')">
               <input type="radio" name="poll_choice" value="cartaz" id="radio-cartaz" required>
               <div>
-                <strong style="color:var(--text-primary); font-size:0.95rem;">📜 Modelo Cartaz (Presencial)</strong>
+                <strong style="color:var(--text-primary); font-size:0.95rem;">📜 Modelo Cartaz (Físico Impresso em Folha A3)</strong>
                 <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:0.25rem;">
-                  Você leva um cartaz A3 com fotos no dia 12/12 e grava um pequeno vídeo segurando o cartaz de toga.
+                  Exige levar uma folha A3 física impressa no dia 12/12 para gravação em vídeo segurando o cartaz de toga. Não pode ser só no celular.
                 </p>
               </div>
             </label>

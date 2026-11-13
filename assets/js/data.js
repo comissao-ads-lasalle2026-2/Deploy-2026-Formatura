@@ -183,16 +183,16 @@ const GRADUATION_DATA = {
     opcoes: [
       {
         id: "arvore",
-        nome: "Modelo Árvore Genealógica (Digital)",
-        descricao: "Não requer gravação presencial no dia da prova de togas. Cada formando cria um mosaico horizontal em JPG com até 6 fotos de familiares e sobe diretamente no portal da SP Produtora. Montagem 100% digital.",
-        vantagens: "Mais prático, sem correria no dia da prova de toga, ideal para quem tem familiares distantes.",
+        nome: "Modelo Árvore Genealógica (100% Digital)",
+        descricao: "Montagem 100% digital pelo computador ou celular. Cada formando cria um mosaico horizontal em arquivo JPG com até 6 fotos de familiares e sobe direto no portal da SP Produtora (prazo: 24/01/2027). Não precisa imprimir papel, não compra folha A3 e não requer gravação presencial no dia da prova de togas.",
+        vantagens: "Muito mais prático: zero custo com impressão gráfica, sem risco de amassar cartaz e não consome tempo no dia 12/12.",
         videoUrl: "https://vimeo.com/1044854930/750971b00a",
         embedId: "1044854930"
       },
       {
         id: "cartaz",
-        nome: "Modelo Cartaz de Fotos (Presencial)",
-        descricao: "Cada formando confecciona fisicamente um cartaz em folha A3 contendo até 6 fotos e uma frase de homenagem legível. Leva pronto no dia da Prova de Togas para gravação individual em vídeo.",
+        nome: "Modelo Cartaz de Fotos (Físico em Folha A3)",
+        descricao: "Exige material FÍSICO e IMPRESSO em mãos no dia 12/12 (tamanho A3: 29,7 x 42 cm) com até 6 fotos e frase legível. Pode ser arte digital (feita no Canva/Photoshop) impressa em gráfica rápida ou colagem manual com fotos reveladas. Cada formando veste a toga e é filmado segurando a folha física na frente do corpo. Não é aceito arquivo apenas no celular.",
         vantagens: "Mais emotivo no vídeo com o formando segurando o cartaz na tela.",
         videoUrl: "https://vimeo.com/1046947056/25d66cb1de",
         embedId: "1046947056"
@@ -309,6 +309,10 @@ const GRADUATION_DATA = {
 
   // Perguntas Frequentes (FAQ)
   faq: [
+    {
+      pergunta: "Como funciona o Modelo Cartaz do vídeo de homenagem? Precisa ser físico ou digital?",
+      resposta: "O Modelo Cartaz exige obrigatoriamente um material FÍSICO e IMPRESSO em mãos no tamanho de uma folha A3 (29,7 x 42 cm) levado no dia da Prova de Togas (12/12). A gravação é presencial, com o formando de toga segurando a folha. Pode ser feito no Canva e impresso em gráfica rápida, ou colagem manual com fotos. Não é aceito arquivo no celular. Já o Modelo Árvore é 100% digital (apenas upload de JPG no portal até 24/01/2027, sem gravação presencial e sem impressão)."
+    },
     {
       pergunta: "E se eu pagar o pacote e reprovar em alguma disciplina no final do semestre?",
       resposta: "Conforme esclarecido pela comissão e secretaria, o valor pago não é perdido. O formando pode transferir a colação para o semestre subsequente, ficando como crédito junto à instituição."
