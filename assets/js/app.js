@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initSearch();
   initModal();
   loadDynamicAnnouncements();
+  initModeratorAuth();
 });
 
 /* Carrega avisos extras de data.json se disponível (modo servidor / GitHub Pages) */
@@ -545,3 +546,104 @@ function showToast(msg) {
     setTimeout(() => toast.remove(), 300);
   }, 3500);
 }
+
+/* ==========================================================================
+   16. CONTROLE DE ACESSO RESTRITO / MODERADOR (COMISSÃO)
+   ========================================================================== */
+const VALID_HASHES = [
+  "479454c871e6fa83aaddd19139d40083858a5aba520a414d6ffa5f5562abd4ec", // ads2026
+  "aa84517be5306896dad70ce57cbaad1b98b9cd74b82d00b5a23de5cd744ac477"  // comissao2026
+];
+
+function initModeratorAuth() {
+  const isAuth = sessionStorage.getItem("ads_moderator_session") === "true";
+  const panel = document.getElementById("moderator-panel");
+  const linkBtn = document.getElementById("btn-open-moderator");
+  
+  if (isAuth && panel) {
+    panel.style.display = "block";
+    if (linkBtn) linkBtn.innerHTML = "🔓 Painel da Comissão (Ativo)";
+  }
+}
+
+async function sha256Hex(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+window.openAuthModal = function() {
+  const isAuth = sessionStorage.getItem("ads_moderator_session") === "true";
+  const panel = document.getElementById("moderator-panel");
+  if (isAuth && panel) {
+    panel.scrollIntoView({ behavior: "smooth" });
+    showToast("Você já está autenticado no painel.");
+    return;
+  }
+  const modal = document.getElementById("auth-modal");
+  const err = document.getElementById("auth-error");
+  const pwdInput = document.getElementById("moderator-pwd");
+  if (err) err.style.display = "none";
+  if (pwdInput) pwdInput.value = "";
+  if (modal) {
+    modal.classList.add("open");
+    setTimeout(() => pwdInput && pwdInput.focus(), 100);
+  }
+};
+
+window.closeAuthModal = function() {
+  const modal = document.getElementById("auth-modal");
+  if (modal) modal.classList.remove("open");
+};
+
+window.handleModeratorLogin = async function(event) {
+  event.preventDefault();
+  const pwdInput = document.getElementById("moderator-pwd");
+  const err = document.getElementById("auth-error");
+  const panel = document.getElementById("moderator-panel");
+  const linkBtn = document.getElementById("btn-open-moderator");
+
+  if (!pwdInput) return;
+  const inputVal = pwdInput.value.trim();
+  const inputHash = await sha256Hex(inputVal);
+  const customHash = localStorage.getItem("ads_custom_moderator_hash");
+
+  const isValid = VALID_HASHES.includes(inputHash) || (customHash && inputHash === customHash);
+
+  if (isValid) {
+    sessionStorage.setItem("ads_moderator_session", "true");
+    closeAuthModal();
+    if (panel) {
+      panel.style.display = "block";
+      panel.scrollIntoView({ behavior: "smooth" });
+    }
+    if (linkBtn) linkBtn.innerHTML = "🔓 Painel da Comissão (Ativo)";
+    showToast("🛡️ Acesso concedido! Bem-vindo à Área da Comissão.");
+  } else {
+    if (err) err.style.display = "block";
+    pwdInput.focus();
+    pwdInput.select();
+  }
+};
+
+window.logoutModerator = function() {
+  sessionStorage.removeItem("ads_moderator_session");
+  const panel = document.getElementById("moderator-panel");
+  const linkBtn = document.getElementById("btn-open-moderator");
+  if (panel) panel.style.display = "none";
+  if (linkBtn) linkBtn.innerHTML = "🔒 Área da Comissão / Moderação";
+  showToast("🔒 Sessão de moderação encerrada com sucesso.");
+};
+
+window.promptChangePassword = async function() {
+  const newPwd = prompt("Digite a nova senha de moderador (mínimo 4 caracteres):");
+  if (!newPwd) return;
+  if (newPwd.trim().length < 4) {
+    alert("A senha deve ter pelo menos 4 caracteres.");
+    return;
+  }
+  const hash = await sha256Hex(newPwd.trim());
+  localStorage.setItem("ads_custom_moderator_hash", hash);
+  showToast("🔑 Senha de moderador alterada com sucesso neste dispositivo!");
+};

@@ -61,6 +61,7 @@ A aplicação foi desenvolvida seguindo o modelo de **Static Web App** desacopla
 | **Busca Instantânea** | Campo de busca por texto em tempo real para localizar rapidamente tópicos como *"toga"*, *"boleto"*, *"reprovação"*, etc. |
 | **Botão Copiar Resumo Whats** | Gera e copia para a área de transferência uma mensagem resumida com formatação e emojis pronta para colar no grupo da turma. |
 | **FAQ & Contatos** | Dúvidas esclarecidas sobre reprovações/créditos, convidados da prova de togas e links diretos para WhatsApp de Eventos, Estúdio SP e portal CASA. |
+| **Painel Restrito da Comissão (Moderador)** | Área protegida por senha/PIN exclusiva para a comissão e moderadores, contendo as instruções e comandos de atualização e deploy, totalmente oculta para visitantes comuns. |
 
 ---
 

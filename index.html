@@ -248,32 +248,60 @@
       </div>
     </section>
 
-    <!-- SEÇÃO ESPECIAL: INSTRUÇÕES PARA A COMISSÃO ATUALIZAR -->
-    <section class="admin-box">
-      <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom: 0.75rem;">
-        <span style="font-size:1.5rem;">⚙️</span>
-        <div>
-          <h4 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan);">Área da Comissão: Como atualizar o portal?</h4>
-          <p style="font-size: 0.85rem; color: var(--text-secondary);">
-            Você pode exportar a conversa do WhatsApp a qualquer momento e atualizar os dados do site em segundos.
-          </p>
+    <!-- ÁREA RESTRITA DA COMISSÃO (PROTEGIDA POR SENHA) -->
+    <section id="moderator-panel" class="admin-box" style="display: none;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem; margin-bottom: 1.25rem;">
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <span style="font-size:1.6rem;">🛡️</span>
+          <div>
+            <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+              <h4 style="font-size: 1.2rem; font-weight: 700; color: var(--accent-cyan);">Painel de Moderação da Comissão</h4>
+              <span class="moderator-badge">Acesso Autorizado</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">
+              Área exclusiva para membros da comissão gerenciarem atualizações do portal.
+            </p>
+          </div>
+        </div>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+          <button id="btn-change-password" class="btn-secondary" onclick="promptChangePassword()" style="font-size:0.8rem; padding:0.4rem 0.8rem;">
+            🔑 Alterar Senha
+          </button>
+          <button id="btn-logout-moderator" class="btn-secondary" onclick="logoutModerator()" style="font-size:0.8rem; padding:0.4rem 0.8rem; color:var(--accent-rose); border-color:rgba(244,63,94,0.3);">
+            🚪 Encerrar Sessão
+          </button>
         </div>
       </div>
 
-      <div style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
-        <p>1. No WhatsApp do grupo, vá em <strong>Mais opções → Exportar conversa (sem mídia)</strong> e salve o arquivo <code>chat.txt</code> ou <code>chat.md</code> na pasta <code>Whats exportado/</code>.</p>
-        <p>2. Execute o script automatizado no terminal para extrair novidades e avisos:</p>
+      <div style="background:var(--bg-secondary); border-radius:var(--radius-md); padding:1.25rem; border:1px solid var(--border-color); margin-bottom:1.25rem;">
+        <h5 style="color:var(--text-primary); font-weight:700; margin-bottom:0.5rem;">📌 Como Atualizar o Portal Após Exportar o WhatsApp:</h5>
+        <ol style="padding-left:1.2rem; font-size:0.875rem; color:var(--text-secondary); line-height:1.7;">
+          <li>No WhatsApp, vá em <strong>Mais opções (⋮) → Mais → Exportar conversa (Sem mídia)</strong> e salve o arquivo <code>chat.txt</code> ou <code>chat.md</code> na pasta <code>Whats exportado/</code>.</li>
+          <li>No terminal do projeto, execute o script automatizado para extrair novidades e avisos:</li>
+        </ol>
+
+        <div class="code-snippet">
+          <code>python scripts/atualizar_portal.py</code>
+          <button class="btn-secondary" onclick="navigator.clipboard.writeText('python scripts/atualizar_portal.py'); showToast('Comando copiado!');" style="padding:0.25rem 0.6rem; font-size:0.75rem;">
+            Copiar Comando
+          </button>
+        </div>
+
+        <p style="font-size:0.875rem; color:var(--text-secondary); line-height:1.7; margin-top:0.75rem;">
+          3. Em seguida, envie as alterações para o GitHub Pages:
+        </p>
+
+        <div class="code-snippet">
+          <code>git add . && git commit -m "update: novos avisos da formatura" && git push</code>
+          <button class="btn-secondary" onclick="navigator.clipboard.writeText('git add . && git commit -m &quot;update: novos avisos da formatura&quot; && git push'); showToast('Comando copiado!');" style="padding:0.25rem 0.6rem; font-size:0.75rem;">
+            Copiar Comandos Git
+          </button>
+        </div>
       </div>
 
-      <div class="code-snippet">
-        <code>python scripts/atualizar_portal.py</code>
-        <button class="btn-secondary" onclick="navigator.clipboard.writeText('python scripts/atualizar_portal.py'); showToast('Comando copiado!');" style="padding:0.25rem 0.6rem; font-size:0.75rem;">
-          Copiar Comando
-        </button>
-      </div>
-
-      <p style="font-size:0.8rem; color:var(--text-muted);">
-        O script lê automaticamente os avisos de Eventos Unilassale e SP Produtora e mantém a base <code>assets/js/data.js</code> sempre atualizada e sincronizada com o GitHub Pages!
+      <p style="font-size:0.8rem; color:var(--text-muted); display:flex; align-items:center; gap:0.5rem;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        Esta seção permanece 100% oculta para os demais alunos e só pode ser visualizada por moderadores autenticados.
       </p>
     </section>
 
@@ -288,6 +316,42 @@
       </div>
       <div class="modal-body" id="modal-player">
         <!-- Iframe do Vimeo inserido dinamicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Acesso Restrito da Comissão -->
+  <div class="modal-backdrop" id="auth-modal">
+    <div class="modal-content" style="max-width: 440px;">
+      <div class="modal-header">
+        <h4 class="modal-title" style="display:flex; align-items:center; gap:0.5rem;">
+          <span>🔒</span> Área da Comissão
+        </h4>
+        <button class="btn-icon" id="auth-modal-close" onclick="closeAuthModal()" style="width:32px; height:32px;">✕</button>
+      </div>
+      <div style="padding: 1.5rem;">
+        <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+          Digite a senha de moderador da comissão para acessar os comandos e configurações internas:
+        </p>
+        <form id="auth-form" onsubmit="handleModeratorLogin(event)">
+          <div style="margin-bottom: 1rem;">
+            <input 
+              type="password" 
+              id="moderator-pwd" 
+              placeholder="Digite a senha de moderador..." 
+              required
+              autocomplete="current-password"
+              style="width: 100%; padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-primary); color: var(--text-primary); font-size: 0.95rem; outline: none;"
+            >
+          </div>
+          <div id="auth-error" style="color: var(--accent-rose); font-size: 0.8rem; margin-bottom: 1rem; display: none;">
+            ⚠️ Senha incorreta. Tente novamente.
+          </div>
+          <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+            <button type="button" class="btn-secondary" onclick="closeAuthModal()">Cancelar</button>
+            <button type="submit" class="btn-primary">Acessar Painel</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -307,6 +371,11 @@
       <p style="margin-top:1.5rem; font-size:0.75rem; color:var(--text-muted);">
         Última sincronização do chat: 13/11/2026 às 15:00
       </p>
+      <div style="margin-top: 1.25rem;">
+        <button id="btn-open-moderator" onclick="openAuthModal()" class="moderator-link">
+          🔒 Área da Comissão / Moderação
+        </button>
+      </div>
     </div>
   </footer>
 
