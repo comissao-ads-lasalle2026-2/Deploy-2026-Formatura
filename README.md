@@ -66,7 +66,14 @@ A aplicação foi desenvolvida seguindo o modelo de **Static Web App** desacopla
 | **Checklist do Formando** | Lista interativa de tarefas pessoais com barra de progresso em tempo real, persistida no `localStorage` do celular de cada aluno. |
 | **Simulador de Orçamento** | Calculadora dinâmica para estimar custos do pacote Standard + extras (camisetas, faixas, fotos) e simulação de parcelamento. |
 | **Gerador de Card Holográfico** | Crachá digital de concluinte de ADS com nome personalizado para compartilhamento nos stories e grupos de WhatsApp. |
-| **Sistema de Votação (Voto Único)** | Cédula interativa oficial da comissão com validação de voto único por matrícula, bloqueio de votos duplicados e integração com Google Sheets sem coleta de dados sensíveis (sem CPF/telefone/e-mail). |
+| **Sistema de Votação (Voto Único)** | Cédula interativa oficial da comissão com validação de voto único por matrícula, bloqueio de votos duplicados, placar persistente com porcentagens em tempo real e integração com Google Sheets sem coleta de dados sensíveis (sem CPF/telefone/e-mail). |
+| **Easter Egg Retrô (Fliperama 👾)** | Modal arcade retrô com dois clássicos 100% responsivos: **Cyber Pinball 2026** (com bumpers iluminados e física) e **Bomber-ADS** (labirinto estilo Bomberman em busca do Diploma 📜), com efeitos sonoros 8-bit sintetizados via Web Audio API e controles touch/teclado. |
+
+---
+
+### 💡 Guia de Handover para Continuação no Linux
+Para dar continuidade ao desenvolvimento neste projeto a partir de qualquer notebook Linux, consulte o arquivo detalhado:  
+👉 **[HANDOVER_DEV_LINUX.md](file:///d:/Gdrive/0%20-%20Faculdade/Formatura/PORTAL%20INFORMACOES%20FORMATURA%20(ADS)/HANDOVER_DEV_LINUX.md)** com arquitetura, diretrizes de privacidade, comandos locais e roadmap de tarefas.
 
 ---
 
@@ -102,15 +109,14 @@ PORTAL INFORMACOES FORMATURA (ADS)/
 │   └── js/
 │       ├── data.js             # Base oficial estática com meta-informações e diretrizes de ADS
 │       ├── data.json           # Base gerada automaticamente com as últimas mensagens do WhatsApp
-│       └── app.js              # Lógica da aplicação (timer, busca, filtros de curso/mural, modal de vídeo)
+│       ├── app.js              # Lógica da aplicação (timer, busca, filtros de curso/mural, modal de vídeo)
+│       └── arcade.js           # Fliperama Retrô: Cyber Pinball 2026 e Bomber-ADS com Web Audio API
 ├── scripts/
-│   └── atualizar_portal.py     # Script Python para parsing e atualização periódica do chat
-├── Whats exportado/            # Diretório de armazenamento dos históricos exportados do WhatsApp
-│   └── Export 13112026/
-│       ├── chat.md
-│       ├── chat.txt
-│       └── TI + ENGENHARIAS 2026_2 - standart com quadro.zip
+│   ├── atualizar_portal.py     # Script Python para parsing e atualização periódica do chat
+│   └── google_apps_script.js   # Script para Web App do Google Apps Script (votações em planilha)
+├── Whats exportado/            # [IGNORADO NO GIT] Armazenamento dos históricos brutos exportados do WhatsApp
 ├── .gitignore                  # Arquivos ignorados pelo controle de versão
+├── HANDOVER_DEV_LINUX.md       # Guia completo de handover para desenvolvimento no Linux
 └── README.md                   # Esta documentação
 ```
 
