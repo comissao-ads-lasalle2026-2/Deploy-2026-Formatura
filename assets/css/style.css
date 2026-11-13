@@ -1,9 +1,9 @@
 /* ==========================================================================
    PORTAL DOS FORMANDOS ADS 2026/2 - UNILASALLE
-   Design System: Modern Glassmorphic Dark/Light Tech Theme
+   Design System: Multi-Theme Modern Glassmorphic AI Engine
    ========================================================================== */
 
-:root {
+:root, [data-theme="cyber-ads"] {
   --bg-primary: #0b0f19;
   --bg-secondary: #111827;
   --bg-card: rgba(17, 24, 39, 0.75);
@@ -33,12 +33,89 @@
   
   --transition-fast: 0.15s ease;
   --transition-normal: 0.25s ease;
+  --theme-gradient: linear-gradient(135deg, #06b6d4, #3b82f6);
 }
 
-[data-theme="light"] {
+/* Tema 2: Emerald Matrix / Developer Tech */
+[data-theme="emerald-matrix"] {
+  --bg-primary: #06120e;
+  --bg-secondary: #0a1f18;
+  --bg-card: rgba(10, 31, 24, 0.75);
+  --bg-card-hover: rgba(16, 45, 36, 0.85);
+  --border-color: rgba(16, 185, 129, 0.15);
+  --border-hover: rgba(16, 185, 129, 0.5);
+  
+  --text-primary: #ecfdf5;
+  --text-secondary: #a7f3d0;
+  --text-muted: #6ee7b7;
+  
+  --accent-cyan: #10b981;
+  --accent-blue: #059669;
+  --accent-indigo: #34d399;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+  
+  --glow-cyan: 0 0 25px rgba(16, 185, 129, 0.3);
+  --glow-blue: 0 0 25px rgba(5, 150, 105, 0.3);
+  --theme-gradient: linear-gradient(135deg, #10b981, #059669);
+}
+
+/* Tema 3: Royal Gold & Navy (Tradição e Gala Acadêmica) */
+[data-theme="royal-gold"] {
+  --bg-primary: #070d1e;
+  --bg-secondary: #0c1733;
+  --bg-card: rgba(12, 23, 51, 0.8);
+  --bg-card-hover: rgba(20, 35, 75, 0.9);
+  --border-color: rgba(245, 158, 11, 0.18);
+  --border-hover: rgba(245, 158, 11, 0.55);
+  
+  --text-primary: #fffbeb;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  
+  --accent-cyan: #f59e0b;
+  --accent-blue: #3b82f6;
+  --accent-indigo: #eab308;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+  
+  --glow-cyan: 0 0 25px rgba(245, 158, 11, 0.3);
+  --glow-blue: 0 0 25px rgba(59, 130, 246, 0.3);
+  --theme-gradient: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+/* Tema 4: Purple Nebula / Synthwave AI */
+[data-theme="purple-nebula"] {
+  --bg-primary: #0c071e;
+  --bg-secondary: #170e38;
+  --bg-card: rgba(23, 14, 56, 0.78);
+  --bg-card-hover: rgba(38, 22, 90, 0.88);
+  --border-color: rgba(192, 132, 252, 0.18);
+  --border-hover: rgba(236, 72, 153, 0.5);
+  
+  --text-primary: #faf5ff;
+  --text-secondary: #d8b4fe;
+  --text-muted: #a855f7;
+  
+  --accent-cyan: #c084fc;
+  --accent-blue: #ec4899;
+  --accent-indigo: #8b5cf6;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+  
+  --glow-cyan: 0 0 25px rgba(192, 132, 252, 0.3);
+  --glow-blue: 0 0 25px rgba(236, 72, 153, 0.3);
+  --theme-gradient: linear-gradient(135deg, #c084fc, #ec4899);
+}
+
+/* Tema 5: Clean Light Academic */
+[data-theme="light-clean"], [data-theme="light"] {
   --bg-primary: #f8fafc;
   --bg-secondary: #f1f5f9;
-  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-card: rgba(255, 255, 255, 0.9);
   --bg-card-hover: rgba(255, 255, 255, 0.98);
   --border-color: rgba(0, 0, 0, 0.08);
   --border-hover: rgba(59, 130, 246, 0.5);
@@ -47,9 +124,17 @@
   --text-secondary: #475569;
   --text-muted: #94a3b8;
   
-  --glow-cyan: 0 4px 20px rgba(6, 182, 212, 0.15);
-  --glow-blue: 0 4px 20px rgba(59, 130, 246, 0.15);
+  --accent-cyan: #0284c7;
+  --accent-blue: #2563eb;
+  --accent-indigo: #4f46e5;
+  --accent-emerald: #059669;
+  --accent-amber: #d97706;
+  --accent-rose: #e11d48;
+  
+  --glow-cyan: 0 4px 20px rgba(2, 132, 199, 0.15);
+  --glow-blue: 0 4px 20px rgba(37, 99, 235, 0.15);
   --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  --theme-gradient: linear-gradient(135deg, #0284c7, #2563eb);
 }
 
 /* Base Styles */
@@ -1152,6 +1237,253 @@ body {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   NOVOS COMPONENTES: CHECKLIST, SIMULADOR, BADGE E SELETOR DE TEMAS
+   ========================================================================== */
+
+/* Seletor de Temas (Grid no Modal) */
+.theme-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.theme-card-option {
+  border: 2px solid var(--border-color);
+  background: var(--bg-card);
+  padding: 0.85rem 0.65rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: center;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.theme-card-option:hover {
+  border-color: var(--accent-cyan);
+  transform: translateY(-2px);
+}
+
+.theme-card-option.active {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.35);
+  background: rgba(6, 182, 212, 0.1);
+}
+
+.theme-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.theme-opt-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Checklist Interativo do Formando */
+.checklist-card {
+  padding: 1.75rem;
+}
+
+.progress-track {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin: 1rem 0 1.5rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-emerald));
+  width: 0%;
+  transition: width 0.4s ease;
+  border-radius: var(--radius-full);
+}
+
+.checklist-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.check-item:hover {
+  border-color: var(--accent-cyan);
+}
+
+.check-item.done {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.check-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 0.2rem;
+  accent-color: var(--accent-emerald);
+  cursor: pointer;
+}
+
+.check-item-text h5 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.15rem;
+}
+
+.check-item.done .check-item-text h5 {
+  text-decoration: line-through;
+  color: var(--accent-emerald);
+}
+
+.check-item-text p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Simulador Financeiro */
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.calc-input-group {
+  margin-bottom: 1rem;
+}
+
+.calc-input-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.35rem;
+}
+
+.calc-input-group input, .calc-input-group select {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.calc-total-box {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(99, 102, 241, 0.12));
+  border: 1px solid var(--accent-cyan);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.calc-total-val {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0.5rem 0;
+  font-family: monospace;
+}
+
+/* Gerador de Badge / Card Virtual do Formando */
+.badge-generator-card {
+  padding: 2rem;
+}
+
+.badge-preview {
+  max-width: 360px;
+  margin: 1.5rem auto 0;
+  background: linear-gradient(145deg, #090d16 0%, #151e30 100%);
+  border: 2px solid var(--accent-cyan);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.6), var(--glow-cyan);
+  position: relative;
+  overflow: hidden;
+}
+
+.badge-preview::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.badge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed var(--border-color);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.badge-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.badge-role {
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.badge-meta {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
+
+.badge-footer {
+  margin-top: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px dashed var(--border-color);
+  padding-top: 0.75rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
 }
 
 /* Responsividade Mobile */

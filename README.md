@@ -62,6 +62,20 @@ A aplicação foi desenvolvida seguindo o modelo de **Static Web App** desacopla
 | **Botão Copiar Resumo Whats** | Gera e copia para a área de transferência uma mensagem resumida com formatação e emojis pronta para colar no grupo da turma. |
 | **FAQ & Contatos** | Dúvidas esclarecidas sobre reprovações/créditos, convidados da prova de togas e links diretos para WhatsApp de Eventos, Estúdio SP e portal CASA. |
 | **Painel Restrito da Comissão (Moderador)** | Área protegida por senha/PIN exclusiva para a comissão e moderadores, contendo as instruções e comandos de atualização e deploy, totalmente oculta para visitantes comuns. |
+| **Motor Multi-Temas (5 Paletas)** | Seletor interativo com 5 temas visuais: *Cyber ADS (Tech)*, *Matrix Dev (Verde)*, *Royal Navy & Gold (Gala)*, *Synthwave AI (Púrpura)* e *Minimal Acadêmico (Claro)*. |
+| **Checklist do Formando** | Lista interativa de tarefas pessoais com barra de progresso em tempo real, persistida no `localStorage` do celular de cada aluno. |
+| **Simulador de Orçamento** | Calculadora dinâmica para estimar custos do pacote Standard + extras (camisetas, faixas, fotos) e simulação de parcelamento. |
+| **Gerador de Card Holográfico** | Crachá digital de concluinte de ADS com nome personalizado para compartilhamento nos stories e grupos de WhatsApp. |
+
+---
+
+### 💡 O que são os "Temas Jekyll" do GitHub e por que nossa solução é superior?
+O **Jekyll** é um gerador de sites estáticos em Ruby criado em 2008 pelo GitHub para renderizar arquivos Markdown em posts de blog simples. Os temas nativos do Jekyll disponíveis no GitHub (como *Cayman, Slate, Hacker, Architect*) são modelos de texto puro de mais de 10 anos atrás, rígidos, sem interatividade moderna e com aparência desatualizada.
+
+O projeto atual foi construído como uma **Single-Page Application moderna sob medida**:
+- Não depende do compilador do Jekyll (utilizamos deploy estático direto).
+- Possui efeitos avançados de **Glassmorphism**, iluminação neon, modais, transições fluidas e cálculo dinâmico no navegador.
+- Suporta múltiplos temas customizados sob medida para o perfil do estudante de Análise e Desenvolvimento de Sistemas.
 
 ---
 

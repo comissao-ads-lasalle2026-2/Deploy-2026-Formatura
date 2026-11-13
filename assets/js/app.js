@@ -19,6 +19,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initModal();
   loadDynamicAnnouncements();
   initModeratorAuth();
+  initChecklist();
+  calculateGraduationBudget();
+  updateBadgePreview();
 });
 
 /* Carrega avisos extras de data.json se disponível (modo servidor / GitHub Pages) */
@@ -39,31 +42,73 @@ async function loadDynamicAnnouncements() {
 }
 
 /* ==========================================================================
-   1. CONTROLE DE TEMA (DARK / LIGHT)
+   1. CONTROLE MULTI-TEMAS (5 PALETAS VISUAIS MODERNAS)
    ========================================================================== */
-function initTheme() {
-  const themeToggle = document.getElementById("theme-toggle");
-  const savedTheme = localStorage.getItem("ads_grad_theme") || "dark";
-  
-  document.documentElement.setAttribute("data-theme", savedTheme);
-  updateThemeIcon(savedTheme);
+const THEMES = [
+  { id: "cyber-ads", name: "Cyber ADS (Tech)", icon: "💻" },
+  { id: "emerald-matrix", name: "Matrix Dev (Verde)", icon: "🟢" },
+  { id: "royal-gold", name: "Royal Navy & Gold (Gala)", icon: "👑" },
+  { id: "purple-nebula", name: "Synthwave AI (Púrpura)", icon: "🔮" },
+  { id: "light-clean", name: "Minimal Acadêmico (Claro)", icon: "☀️" }
+];
 
+function initTheme() {
+  const savedTheme = localStorage.getItem("ads_grad_theme") || "cyber-ads";
+  applyTheme(savedTheme, false);
+
+  const themeToggle = document.getElementById("theme-toggle");
   if (themeToggle) {
     themeToggle.addEventListener("click", () => {
-      const current = document.documentElement.getAttribute("data-theme");
-      const next = current === "light" ? "dark" : "light";
-      document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem("ads_grad_theme", next);
-      updateThemeIcon(next);
-      showToast(`Tema alterado para modo ${next === 'light' ? 'claro' : 'escuro'}`);
+      toggleQuickTheme();
     });
   }
 }
 
+function applyTheme(themeId, showNotification = true) {
+  document.documentElement.setAttribute("data-theme", themeId);
+  localStorage.setItem("ads_grad_theme", themeId);
+  updateThemeIcon(themeId);
+  updateThemePickerUI(themeId);
+  if (showNotification) {
+    const t = THEMES.find(item => item.id === themeId);
+    showToast(`🎨 Estilo alterado para: ${t ? t.name : themeId}`);
+  }
+}
+
+function updateThemePickerUI(currentTheme) {
+  document.querySelectorAll(".theme-card-option").forEach(card => card.classList.remove("active"));
+  const activeCard = document.getElementById(`theme-opt-${currentTheme}`);
+  if (activeCard) activeCard.classList.add("active");
+}
+
+window.openThemeModal = function() {
+  const modal = document.getElementById("theme-modal");
+  const current = document.documentElement.getAttribute("data-theme") || "cyber-ads";
+  updateThemePickerUI(current);
+  if (modal) modal.classList.add("open");
+};
+
+window.closeThemeModal = function() {
+  const modal = document.getElementById("theme-modal");
+  if (modal) modal.classList.remove("open");
+};
+
+window.selectTheme = function(themeId) {
+  applyTheme(themeId, true);
+  closeThemeModal();
+};
+
+window.toggleQuickTheme = function() {
+  const current = document.documentElement.getAttribute("data-theme") || "cyber-ads";
+  const currentIndex = THEMES.findIndex(t => t.id === current);
+  const nextIndex = (currentIndex + 1) % THEMES.length;
+  applyTheme(THEMES[nextIndex].id, true);
+};
+
 function updateThemeIcon(theme) {
   const icon = document.getElementById("theme-icon");
   if (!icon) return;
-  if (theme === "light") {
+  if (theme === "light-clean" || theme === "light") {
     icon.innerHTML = `<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>`; // lua
   } else {
     icon.innerHTML = `<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path>`; // sol
@@ -646,4 +691,123 @@ window.promptChangePassword = async function() {
   const hash = await sha256Hex(newPwd.trim());
   localStorage.setItem("ads_custom_moderator_hash", hash);
   showToast("🔑 Senha de moderador alterada com sucesso neste dispositivo!");
+};
+
+/* ==========================================================================
+   17. CHECKLIST INTERATIVO DO FORMANDO
+   ========================================================================== */
+const CHECKLIST_ITEMS = [
+  { id: "c1", title: "Abertura do Requerimento no CASA", desc: "Protocolo de colação de grau registrado no portal acadêmico Unilasalle." },
+  { id: "c2", title: "Pacote Oficial da Formatura", desc: "Adesão ao pacote Standard com Quadro (R$ 1.200,00) via financeiro do CASA." },
+  { id: "c3", title: "Presença Confirmada no Apitaço ADS", desc: "Segunda-feira (16/11) às 18h30 na Sala Google com apito próprio." },
+  { id: "c4", title: "Voto no Modelo do Vídeo dos Familiares", desc: "Votar entre Modelo Árvore (Digital) vs Modelo Cartaz até dia 20/11." },
+  { id: "c5", title: "Preparação para a Prova de Togas", desc: "Sábado 12/12 pela manhã. Fotos oficiais, de turma e familiares no campus." },
+  { id: "c6", title: "Música MP3 de Entrada Preparada", desc: "Arquivo MP3 de boa qualidade (160k+) cortado para entrada no palco (~30s)." },
+  { id: "c7", title: "Foto Pessoal no Portal do Formando SP", desc: "Upload da foto de infância/família até dia 24/01/2027 no portal da produtora." }
+];
+
+function initChecklist() {
+  const container = document.getElementById("checklist-container");
+  if (!container) return;
+
+  const savedStates = JSON.parse(localStorage.getItem("ads_checklist_states") || "{}");
+
+  container.innerHTML = CHECKLIST_ITEMS.map(item => {
+    const isDone = !!savedStates[item.id];
+    return `
+      <div class="check-item ${isDone ? 'done' : ''}" id="check-row-${item.id}" onclick="toggleCheckItem('${item.id}')">
+        <input type="checkbox" id="check-${item.id}" ${isDone ? 'checked' : ''} onclick="event.stopPropagation(); toggleCheckItem('${item.id}')">
+        <div class="check-item-text">
+          <h5>${item.title}</h5>
+          <p>${item.desc}</p>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  updateChecklistProgress();
+}
+
+window.toggleCheckItem = function(id) {
+  const checkbox = document.getElementById(`check-${id}`);
+  const row = document.getElementById(`check-row-${id}`);
+  if (!checkbox || !row) return;
+
+  checkbox.checked = !checkbox.checked;
+  row.classList.toggle("done", checkbox.checked);
+
+  const savedStates = JSON.parse(localStorage.getItem("ads_checklist_states") || "{}");
+  savedStates[id] = checkbox.checked;
+  localStorage.setItem("ads_checklist_states", JSON.stringify(savedStates));
+
+  updateChecklistProgress();
+  if (checkbox.checked) {
+    showToast("✅ Etapa concluída com sucesso!");
+  }
+};
+
+function updateChecklistProgress() {
+  const savedStates = JSON.parse(localStorage.getItem("ads_checklist_states") || "{}");
+  const doneCount = CHECKLIST_ITEMS.filter(item => !!savedStates[item.id]).length;
+  const total = CHECKLIST_ITEMS.length;
+  const percent = Math.round((doneCount / total) * 100);
+
+  const progressBar = document.getElementById("checklist-progress-bar");
+  const progressText = document.getElementById("checklist-progress-text");
+
+  if (progressBar) progressBar.style.width = `${percent}%`;
+  if (progressText) progressText.textContent = `${percent}% Concluído (${doneCount} de ${total})`;
+}
+
+/* ==========================================================================
+   18. SIMULADOR DE ORÇAMENTO DA FORMATURA
+   ========================================================================== */
+window.calculateGraduationBudget = function() {
+  const basePackage = 1200; // Standard com quadro
+  const extrasEl = document.getElementById("calc-extras");
+  const installmentsEl = document.getElementById("calc-installments");
+  const totalDisplay = document.getElementById("calc-total-display");
+  const installmentsDisplay = document.getElementById("calc-installments-display");
+
+  const extras = extrasEl ? parseFloat(extrasEl.value) : 50;
+  const installments = installmentsEl ? parseInt(installmentsEl.value) : 5;
+
+  const total = basePackage + extras;
+  const perInstallment = (total / installments).toFixed(2).replace(".", ",");
+  const formattedTotal = total.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+  if (totalDisplay) totalDisplay.textContent = formattedTotal;
+  if (installmentsDisplay) {
+    installmentsDisplay.textContent = installments === 1 
+      ? "Valor integral à vista" 
+      : `ou ${installments}x de R$ ${perInstallment}`;
+  }
+};
+
+/* ==========================================================================
+   19. GERADOR DE BADGE DO FORMANDO ADS
+   ========================================================================== */
+window.updateBadgePreview = function() {
+  const input = document.getElementById("badge-name-input");
+  const displayName = document.getElementById("badge-display-name");
+  if (!input || !displayName) return;
+  displayName.textContent = input.value.trim().toUpperCase() || "FORMANDO ADS";
+};
+
+window.copyBadgeShareText = function() {
+  const input = document.getElementById("badge-name-input");
+  const name = input && input.value.trim() ? input.value.trim() : "Formando";
+  const text = `🎓 *CONCLUINTE ADS 2026/2 - UNILASALLE* 🚀\n\n` +
+               `👤 Nome: ${name.toUpperCase()}\n` +
+               `💻 Curso: Análise e Desenvolvimento de Sistemas\n` +
+               `🏛 Instituição: Universidade La Salle (Canoas/RS)\n` +
+               `🗓 Colação de Grau: Março/2027\n\n` +
+               `Acompanhe todos os detalhes da nossa formatura no portal oficial:\n` +
+               `https://andersonrgs.github.io/Deploy-2026-Formatura-ADS-La-Salle/`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    showToast("🎉 Texto do Card copiado para o WhatsApp!");
+  }).catch(() => {
+    showToast("Não foi possível copiar automaticamente.");
+  });
 };
