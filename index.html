@@ -46,6 +46,9 @@
       </ul>
 
       <div class="nav-actions">
+        <button class="arcade-easter-btn" onclick="openArcadeModal()" aria-label="Easter Egg Arcade Retrô" title="🕹️ Easter Egg: Fliperama ADS Retrô">
+          <span class="arcade-icon-glow">👾</span>
+        </button>
         <button class="btn-secondary" onclick="openThemeModal()" style="padding: 0.45rem 0.75rem; font-size: 0.8rem; display:inline-flex; align-items:center; gap:0.35rem;" title="Escolher Tema Visual">
           <span>🎨</span> <span>Temas</span>
         </button>
@@ -695,6 +698,114 @@
     </div>
   </div>
 
+  <!-- MODAL EASTER EGG: RETRO FLIPERAMA ADS 2026 -->
+  <div class="modal-backdrop" id="arcade-modal">
+    <div class="arcade-modal-content">
+      <div class="arcade-header">
+        <div class="arcade-title">
+          <span>🕹️</span>
+          <span>FLIPERAMA ADS 2026</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+          <button id="arcade-sound-btn" class="btn-secondary" onclick="toggleArcadeSound()" style="padding:0.25rem 0.5rem; font-size:0.75rem;">
+            🔊 Som: ON
+          </button>
+          <button class="btn-icon" onclick="closeArcadeModal()" style="width:30px; height:30px;">✕</button>
+        </div>
+      </div>
+
+      <!-- Abas de seleção de jogo -->
+      <div class="arcade-tabs">
+        <button id="tab-pinball" class="arcade-tab-btn active" onclick="switchArcadeGame('pinball')">
+          🎯 Cyber Pinball 2026
+        </button>
+        <button id="tab-bomber" class="arcade-tab-btn" onclick="switchArcadeGame('bomber')">
+          💣 Bomber-ADS (Diploma)
+        </button>
+      </div>
+
+      <!-- CONTAINER JOGO 1: CYBER PINBALL -->
+      <div id="arcade-pinball-box" style="display:flex; flex-direction:column;">
+        <div class="arcade-scoreboard">
+          <div>SCORE: <span id="pinball-score-val" style="color:#ffffff; font-weight:bold;">000000</span></div>
+          <div>RECORD: <span id="pinball-hi-val" style="color:#f59e0b; font-weight:bold;">000000</span></div>
+          <div>BOLAS: <span id="pinball-balls-val" style="color:#10b981;">● ● ●</span></div>
+        </div>
+
+        <div class="arcade-canvas-wrap">
+          <canvas id="pinball-canvas" width="360" height="560"></canvas>
+        </div>
+
+        <!-- Controles Virtuais Pinball -->
+        <div class="arcade-touch-controls">
+          <button class="btn-arcade-touch btn-arcade-launch" onclick="launchPinballBall()">
+            🚀 LANÇAR BOLA (Espaço / Puxar)
+          </button>
+          <div class="pinball-touch-row">
+            <button class="btn-arcade-touch" onpointerdown="setPinballFlipper('left', true)" onpointerup="setPinballFlipper('left', false)" onpointercancel="setPinballFlipper('left', false)">
+              ◀ FLIP ESQUERDO (A / ←)
+            </button>
+            <button class="btn-arcade-touch" onpointerdown="setPinballFlipper('right', true)" onpointerup="setPinballFlipper('right', false)" onpointercancel="setPinballFlipper('right', false)">
+              FLIP DIREITO ▶ (D / →)
+            </button>
+          </div>
+        </div>
+
+        <p class="arcade-hints">
+          💡 <strong>Como Jogar:</strong> No Celular/Tablet toque nas laterais da tela ou nos botões acima. No PC use as setas do teclado (ou A e D) e Espaço para lançar.
+        </p>
+      </div>
+
+      <!-- CONTAINER JOGO 2: BOMBER-ADS -->
+      <div id="arcade-bomber-box" style="display:none; flex-direction:column;">
+        <div class="arcade-scoreboard">
+          <div>SCORE: <span id="bomber-score-val" style="color:#ffffff; font-weight:bold;">00000</span></div>
+          <div>MISSÃO: <span style="color:#f59e0b; font-weight:bold;">ENCONTRAR O DIPLOMA 📜</span></div>
+          <div>
+            <button onclick="restartBomber()" style="background:transparent; border:none; color:#06b6d4; cursor:pointer; font-size:0.75rem; text-decoration:underline;">
+              Novo Jogo
+            </button>
+          </div>
+        </div>
+
+        <div class="arcade-canvas-wrap">
+          <canvas id="bomber-canvas" width="352" height="352"></canvas>
+        </div>
+
+        <!-- Controles Virtuais Bomber-ADS -->
+        <div class="arcade-touch-controls" style="margin-top:0.75rem;">
+          <div style="display:flex; justify-content:space-around; align-items:center; gap:1rem;">
+            <!-- D-PAD -->
+            <div class="dpad-container">
+              <div></div>
+              <button class="dpad-btn" onpointerdown="setBomberMove('up', true)" onpointerup="setBomberMove('up', false)">▲</button>
+              <div></div>
+              <button class="dpad-btn" onpointerdown="setBomberMove('left', true)" onpointerup="setBomberMove('left', false)">◀</button>
+              <div style="display:flex; align-items:center; justify-content:center; color:#64748b; font-size:0.7rem;">+</div>
+              <button class="dpad-btn" onpointerdown="setBomberMove('right', true)" onpointerup="setBomberMove('right', false)">▶</button>
+              <div></div>
+              <button class="dpad-btn" onpointerdown="setBomberMove('down', true)" onpointerup="setBomberMove('down', false)">▼</button>
+              <div></div>
+            </div>
+
+            <!-- BOTÃO BOMBA -->
+            <div>
+              <button class="btn-arcade-touch btn-arcade-launch" onclick="dropBomberBomb()" style="width:110px; height:80px; flex-direction:column; font-size:0.95rem;">
+                <span style="font-size:1.8rem;">💣</span>
+                BOMBA
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <p class="arcade-hints">
+          💡 <strong>Como Jogar:</strong> Destrua os blocos de código ({}) com bombas para achar o Diploma ADS! Evite os bugs 👾. No PC use WASD / Setas e Espaço.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Rodapé -->
   <footer class="footer">
     <div class="container">
@@ -721,5 +832,6 @@
   <!-- Scripts -->
   <script src="assets/js/data.js"></script>
   <script src="assets/js/app.js"></script>
+  <script src="assets/js/arcade.js"></script>
 </body>
 </html>
