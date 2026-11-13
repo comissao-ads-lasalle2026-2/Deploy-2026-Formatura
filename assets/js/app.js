@@ -824,10 +824,49 @@ let currentPlacar = {
   pctCartaz: 0
 };
 
+function loadStoredPlacar() {
+  const savedPlacar = localStorage.getItem("ads_poll_placar");
+  if (savedPlacar) {
+    try {
+      const p = JSON.parse(savedPlacar);
+      if (p && typeof p.total === "number") return p;
+    } catch(e) {}
+  }
+
+  // Se não há placar geral salvo, mas o formando já votou localmente neste aparelho:
+  const savedVote = localStorage.getItem("ads_vote_familiares");
+  if (savedVote) {
+    try {
+      const v = JSON.parse(savedVote);
+      if (v && v.choice) {
+        const isArvore = v.choice === "arvore";
+        return {
+          total: 1,
+          arvore: isArvore ? 1 : 0,
+          cartaz: isArvore ? 0 : 1,
+          pctArvore: isArvore ? 100 : 0,
+          pctCartaz: isArvore ? 0 : 100
+        };
+      }
+    } catch(e) {}
+  }
+
+  return {
+    total: 0,
+    arvore: 0,
+    cartaz: 0,
+    pctArvore: 0,
+    pctCartaz: 0
+  };
+}
+
 function initVotingSystem() {
   const cfgInput = document.getElementById("cfg-voting-script-url");
   const savedUrl = localStorage.getItem("comissao_voting_api_url") || "";
   if (cfgInput) cfgInput.value = savedUrl;
+
+  // Carrega placar persistente ou reconstrói a partir do voto do formando
+  currentPlacar = loadStoredPlacar();
 
   // Verifica se o aluno já votou neste aparelho
   const savedVote = JSON.parse(localStorage.getItem("ads_vote_familiares") || "null");
@@ -835,8 +874,9 @@ function initVotingSystem() {
     showVoteReceipt(savedVote.nome, savedVote.choice, savedVote.matricula);
   }
 
-  fetchCurrentPlacar();
+  // Renderiza imediatamente com porcentagens visíveis
   renderPlacarUI(currentPlacar);
+  fetchCurrentPlacar();
 }
 
 window.selectPollOption = function(choice) {
@@ -857,11 +897,12 @@ async function fetchCurrentPlacar() {
       const data = await res.json();
       if (data && data.placar && data.placar.total > 0) {
         currentPlacar = data.placar;
+        localStorage.setItem("ads_poll_placar", JSON.stringify(currentPlacar));
         renderPlacarUI(currentPlacar);
       }
     }
   } catch (err) {
-    // Mantém placar padrão se offline
+    // Mantém placar local se offline
   }
 }
 
@@ -872,17 +913,24 @@ function renderPlacarUI(placar) {
   const fillCartaz = document.getElementById("fill-cartaz");
   const totalVotes = document.getElementById("poll-total-votes");
 
-  const total = (placar && placar.total) ? placar.total : 0;
-  const pctA = total > 0 ? (placar.pctArvore || 0) : 0;
-  const pctC = total > 0 ? (placar.pctCartaz || 0) : 0;
+  const arvore = (placar && placar.arvore) ? Number(placar.arvore) : 0;
+  const cartaz = (placar && placar.cartaz) ? Number(placar.cartaz) : 0;
+  const total = (placar && typeof placar.total === "number") ? Number(placar.total) : (arvore + cartaz);
 
-  if (pctArvore) pctArvore.textContent = total > 0 ? `${pctA}% (${placar.arvore || 0} votos)` : "0 votos";
-  if (pctCartaz) pctCartaz.textContent = total > 0 ? `${pctC}% (${placar.cartaz || 0} votos)` : "0 votos";
+  const pctA = total > 0 ? Math.round((arvore / total) * 100) : 0;
+  const pctC = total > 0 ? (100 - pctA) : 0;
+
+  if (pctArvore) {
+    pctArvore.innerHTML = `<span class="poll-badge-pct arvore">${pctA}%</span><span class="poll-badge-count">(${arvore} ${arvore === 1 ? 'voto' : 'votos'})</span>`;
+  }
+  if (pctCartaz) {
+    pctCartaz.innerHTML = `<span class="poll-badge-pct cartaz">${pctC}%</span><span class="poll-badge-count">(${cartaz} ${cartaz === 1 ? 'voto' : 'votos'})</span>`;
+  }
   if (fillArvore) fillArvore.style.width = `${pctA}%`;
   if (fillCartaz) fillCartaz.style.width = `${pctC}%`;
   if (totalVotes) {
-    totalVotes.textContent = total > 0 
-      ? `Total computado: ${total} formando(s)` 
+    totalVotes.innerHTML = total > 0 
+      ? `Total computado: <strong style="color:var(--text-primary);">${total}</strong> formando${total === 1 ? '' : 's'}` 
       : `Aguardando primeiros votos da turma`;
   }
 }
@@ -947,22 +995,24 @@ window.handleCastVote = async function(event) {
         currentPlacar = result.placar;
       }
     } catch (e) {
-      console.warn("API indisponível, computando voto localmente:", e);
+      console.warn("API remota indisponível, computando voto localmente:", e);
     }
   }
 
-  // Registra confirmação local para impedir revoto
+  // Registra confirmação local e atualiza placar
   if (choice === "arvore") currentPlacar.arvore++;
   else currentPlacar.cartaz++;
   currentPlacar.total = currentPlacar.arvore + currentPlacar.cartaz;
   currentPlacar.pctArvore = Math.round((currentPlacar.arvore / currentPlacar.total) * 100);
-  currentPlacar.pctCartaz = Math.round((currentPlacar.cartaz / currentPlacar.total) * 100);
+  currentPlacar.pctCartaz = 100 - currentPlacar.pctArvore;
 
+  // Persiste tanto o voto quanto o placar atualizado
   localStorage.setItem("ads_vote_familiares", JSON.stringify({ nome, matricula, choice }));
+  localStorage.setItem("ads_poll_placar", JSON.stringify(currentPlacar));
 
   renderPlacarUI(currentPlacar);
   showVoteReceipt(nome, choice, matricula);
-  showToast("🎉 Parabéns! Seu voto foi registrado com sucesso!");
+  showToast("🎉 Parabéns! Seu voto oficial foi registrado com sucesso!");
 };
 
 function showVoteReceipt(nome, choice, matricula) {
@@ -973,10 +1023,53 @@ function showVoteReceipt(nome, choice, matricula) {
   if (form) form.style.display = "none";
   if (receipt && receiptText) {
     const nomeModelo = choice === "arvore" ? "🌳 Modelo Árvore (Digital)" : "📜 Modelo Cartaz (Presencial)";
-    receiptText.innerHTML = `Olá, <strong>${nome}</strong> (Matrícula: ${matricula}). Seu voto foi registrado para: <strong>${nomeModelo}</strong>.<br><span style="color:var(--text-muted); font-size:0.8rem;">Cada aluno concluinte tem direito a um único voto para garantir a transparência da turma.</span>`;
+    receiptText.innerHTML = `
+      <div style="font-size:0.95rem; line-height:1.6;">
+        Olá, <strong>${nome}</strong> (Matrícula: <code>${matricula}</code>).<br>
+        Seu voto oficial foi registrado para: <strong style="color:var(--accent-emerald);">${nomeModelo}</strong>.
+      </div>
+      <div style="margin-top:0.6rem; font-size:0.8rem; color:var(--text-secondary); display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+        <span style="background:rgba(16,185,129,0.2); color:var(--accent-emerald); padding:0.2rem 0.5rem; border-radius:var(--radius-sm); font-weight:700;">
+          ✓ Voto Único Computado
+        </span>
+        <span>A porcentagem atualizada da turma está calculada no placar abaixo em tempo real.</span>
+      </div>
+    `;
     receipt.style.display = "block";
   }
 }
+
+window.resetLocalVote = function() {
+  if (confirm("Deseja realmente limpar seu voto de teste deste navegador para testar a votação novamente?")) {
+    localStorage.removeItem("ads_vote_familiares");
+    localStorage.removeItem("ads_poll_placar");
+    currentPlacar = { total: 0, arvore: 0, cartaz: 0, pctArvore: 0, pctCartaz: 0 };
+    renderPlacarUI(currentPlacar);
+    
+    const form = document.getElementById("vote-form");
+    const receipt = document.getElementById("vote-receipt");
+    const btnSubmit = document.getElementById("btn-submit-vote");
+    const statusMsg = document.getElementById("vote-status-msg");
+    const nameInput = document.getElementById("voter-name");
+    const idInput = document.getElementById("voter-id");
+    
+    if (form) form.style.display = "block";
+    if (receipt) receipt.style.display = "none";
+    if (btnSubmit) {
+      btnSubmit.disabled = false;
+      btnSubmit.innerHTML = "🗳️ Confirmar Meu Voto";
+    }
+    if (statusMsg) statusMsg.textContent = "";
+    if (nameInput) nameInput.value = "";
+    if (idInput) idInput.value = "";
+    
+    document.querySelectorAll(".poll-option-card").forEach(c => c.classList.remove("selected"));
+    const radios = document.querySelectorAll('input[name="poll_choice"]');
+    radios.forEach(r => r.checked = false);
+
+    showToast("🔄 Voto de teste resetado! O formulário está pronto para um novo teste.");
+  }
+};
 
 window.saveVotingApiUrl = function() {
   const input = document.getElementById("cfg-voting-script-url");

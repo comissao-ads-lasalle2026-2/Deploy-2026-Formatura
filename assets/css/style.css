@@ -1549,9 +1549,32 @@ body {
 .poll-bar-header {
   display: flex;
   justify-content: space-between;
-  font-size: 0.85rem;
+  align-items: center;
+  font-size: 0.875rem;
   font-weight: 700;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.4rem;
+}
+
+.poll-badge-pct {
+  display: inline-block;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.poll-badge-pct.arvore {
+  color: #10b981;
+}
+
+.poll-badge-pct.cartaz {
+  color: #f59e0b;
+}
+
+.poll-badge-count {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-left: 0.25rem;
 }
 
 .poll-progress-track {
