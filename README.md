@@ -66,6 +66,7 @@ A aplicação foi desenvolvida seguindo o modelo de **Static Web App** desacopla
 | **Checklist do Formando** | Lista interativa de tarefas pessoais com barra de progresso em tempo real, persistida no `localStorage` do celular de cada aluno. |
 | **Simulador de Orçamento** | Calculadora dinâmica para estimar custos do pacote Standard + extras (camisetas, faixas, fotos) e simulação de parcelamento. |
 | **Gerador de Card Holográfico** | Crachá digital de concluinte de ADS com nome personalizado para compartilhamento nos stories e grupos de WhatsApp. |
+| **Sistema de Votação (Voto Único)** | Cédula interativa oficial da comissão com validação de voto único por matrícula, bloqueio de votos duplicados e integração com Google Sheets sem coleta de dados sensíveis (sem CPF/telefone/e-mail). |
 
 ---
 

@@ -192,6 +192,126 @@
       <div class="voting-grid" id="voting-container">
         <!-- Cards das opções inseridos via JS -->
       </div>
+
+      <!-- CÉDULA DE VOTAÇÃO OFICIAL COM VOTO ÚNICO -->
+      <div class="ballot-box" id="ballot-box-container">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;">
+          <div>
+            <span style="font-size:0.75rem; font-weight:700; color:var(--accent-amber); text-transform:uppercase; letter-spacing:0.05em;">Votação Oficial • Comissão ADS</span>
+            <h4 style="font-size:1.3rem; font-weight:800; color:var(--text-primary); margin-top:0.25rem;">Registrar Meu Voto na Enquete</h4>
+          </div>
+          <span style="font-size:0.75rem; background:rgba(245,158,11,0.15); color:var(--accent-amber); border:1px solid var(--accent-amber); padding:0.25rem 0.65rem; border-radius:var(--radius-full); font-weight:700;">
+            1 Voto por Formando
+          </span>
+        </div>
+
+        <!-- FORMULÁRIO DE VOTO -->
+        <form id="vote-form" onsubmit="handleCastVote(event)">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:1rem; margin-bottom:1rem;">
+            <div>
+              <label style="display:block; font-size:0.85rem; font-weight:600; color:var(--text-secondary); margin-bottom:0.35rem;">
+                Seu Nome e Sobrenome: *
+              </label>
+              <input 
+                type="text" 
+                id="voter-name" 
+                required 
+                placeholder="Ex: Anderson Oliveira" 
+                style="width:100%; padding:0.75rem 1rem; border-radius:var(--radius-sm); border:1px solid var(--border-color); background:var(--bg-secondary); color:var(--text-primary); font-size:0.9rem; outline:none;"
+              >
+            </div>
+            <div>
+              <label style="display:block; font-size:0.85rem; font-weight:600; color:var(--text-secondary); margin-bottom:0.35rem;">
+                Sua Matrícula Unilasalle: *
+              </label>
+              <input 
+                type="text" 
+                id="voter-id" 
+                required 
+                placeholder="Ex: 202210123" 
+                style="width:100%; padding:0.75rem 1rem; border-radius:var(--radius-sm); border:1px solid var(--border-color); background:var(--bg-secondary); color:var(--text-primary); font-size:0.9rem; outline:none;"
+              >
+            </div>
+          </div>
+
+          <label style="display:block; font-size:0.85rem; font-weight:600; color:var(--text-secondary); margin-bottom:0.5rem;">
+            Selecione o seu modelo preferido: *
+          </label>
+
+          <div class="poll-options-grid">
+            <label class="poll-option-card" id="opt-card-arvore" onclick="selectPollOption('arvore')">
+              <input type="radio" name="poll_choice" value="arvore" id="radio-arvore" required>
+              <div>
+                <strong style="color:var(--text-primary); font-size:0.95rem;">🌳 Modelo Árvore (Digital)</strong>
+                <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:0.25rem;">
+                  Você sobe um mosaico com até 6 fotos no portal. Sem gravação presencial no dia da toga.
+                </p>
+              </div>
+            </label>
+
+            <label class="poll-option-card" id="opt-card-cartaz" onclick="selectPollOption('cartaz')">
+              <input type="radio" name="poll_choice" value="cartaz" id="radio-cartaz" required>
+              <div>
+                <strong style="color:var(--text-primary); font-size:0.95rem;">📜 Modelo Cartaz (Presencial)</strong>
+                <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:0.25rem;">
+                  Você leva um cartaz A3 com fotos no dia 12/12 e grava um pequeno vídeo segurando o cartaz de toga.
+                </p>
+              </div>
+            </label>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-top:1.25rem;">
+            <button type="submit" id="btn-submit-vote" class="btn-primary" style="padding:0.75rem 1.5rem; font-size:0.9rem;">
+              🗳️ Confirmar Meu Voto
+            </button>
+            <span id="vote-status-msg" style="font-size:0.85rem; font-weight:600;"></span>
+          </div>
+        </form>
+
+        <!-- COMPROVANTE DE VOTO (Aparece após votar) -->
+        <div id="vote-receipt" style="display:none; padding:1.25rem; background:rgba(16, 185, 129, 0.1); border:1px solid var(--accent-emerald); border-radius:var(--radius-md); margin-bottom:1.5rem;">
+          <div style="display:flex; align-items:center; gap:0.5rem; color:var(--accent-emerald); font-weight:700; font-size:1.05rem;">
+            <span>✅</span> Voto Registrado com Sucesso!
+          </div>
+          <p id="vote-receipt-text" style="font-size:0.85rem; color:var(--text-secondary); margin-top:0.35rem;"></p>
+        </div>
+
+        <!-- PLACAR AO VIVO DA TURMA -->
+        <div class="poll-results-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <h5 style="font-size:0.95rem; font-weight:700; color:var(--text-primary);">📊 Placar Parcial da Turma</h5>
+            <span id="poll-total-votes" style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">Carregando votos...</span>
+          </div>
+
+          <div class="poll-bar-item">
+            <div class="poll-bar-header">
+              <span>🌳 Modelo Árvore (Digital)</span>
+              <span id="pct-arvore">0% (0 votos)</span>
+            </div>
+            <div class="poll-progress-track">
+              <div id="fill-arvore" class="poll-progress-fill arvore" style="width:0%;"></div>
+            </div>
+          </div>
+
+          <div class="poll-bar-item">
+            <div class="poll-bar-header">
+              <span>📜 Modelo Cartaz (Presencial)</span>
+              <span id="pct-cartaz">0% (0 votos)</span>
+            </div>
+            <div class="poll-progress-track">
+              <div id="fill-cartaz" class="poll-progress-fill cartaz" style="width:0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="privacy-badge-box">
+          <span>🔒</span>
+          <div>
+            <strong>Garantia de Privacidade da Comissão:</strong> 
+            Não coletamos CPF, telefones pessoais ou e-mails. Apenas o Nome e a Matrícula são utilizados para computar um voto único por formando e garantir uma eleição limpa e auditável.
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- SEÇÃO: GUIA DE MÍDIA & PROVA DE TOGAS -->
@@ -434,6 +554,28 @@
             Copiar Comandos Git
           </button>
         </div>
+      </div>
+
+      <!-- CONFIGURAÇÃO DA PLANILHA DE ENQUETES (GOOGLE SHEETS) -->
+      <div style="background:var(--bg-secondary); border-radius:var(--radius-md); padding:1.25rem; border:1px solid var(--border-color); margin-bottom:1.25rem;">
+        <h5 style="color:var(--text-primary); font-weight:700; margin-bottom:0.35rem;">📊 Conexão com a Planilha de Votações (Google Drive):</h5>
+        <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.75rem;">
+          Cole abaixo a URL do App da Web gerada no Google Apps Script para gravar os votos em tempo real na sua planilha do Google Drive:
+        </p>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+          <input 
+            type="url" 
+            id="cfg-voting-script-url" 
+            placeholder="https://script.google.com/macros/s/.../exec" 
+            style="flex:1; min-width:260px; padding:0.6rem 0.85rem; border-radius:var(--radius-sm); border:1px solid var(--border-color); background:var(--bg-primary); color:var(--text-primary); font-size:0.85rem; outline:none;"
+          >
+          <button class="btn-primary" onclick="saveVotingApiUrl()" style="padding:0.6rem 1rem; font-size:0.8rem;">
+            Salvar Conexão
+          </button>
+        </div>
+        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.5rem;">
+          *O script pronto está salvo no arquivo <code>scripts/google_apps_script.js</code> no seu projeto para copiar e colar na planilha.
+        </p>
       </div>
 
       <p style="font-size:0.8rem; color:var(--text-muted); display:flex; align-items:center; gap:0.5rem;">

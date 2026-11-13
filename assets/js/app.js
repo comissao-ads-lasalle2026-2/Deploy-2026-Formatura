@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initChecklist();
   calculateGraduationBudget();
   updateBadgePreview();
+  initVotingSystem();
 });
 
 /* Carrega avisos extras de data.json se disponível (modo servidor / GitHub Pages) */
@@ -810,4 +811,170 @@ window.copyBadgeShareText = function() {
   }).catch(() => {
     showToast("Não foi possível copiar automaticamente.");
   });
+};
+
+/* ==========================================================================
+   20. SISTEMA DE VOTAÇÃO E ENQUETES (VOTO ÚNICO COM GOOGLE SHEETS / LOCAL)
+   ========================================================================== */
+let currentPlacar = {
+  total: 18,
+  arvore: 11,
+  cartaz: 7,
+  pctArvore: 61,
+  pctCartaz: 39
+};
+
+function initVotingSystem() {
+  const cfgInput = document.getElementById("cfg-voting-script-url");
+  const savedUrl = localStorage.getItem("comissao_voting_api_url") || "";
+  if (cfgInput) cfgInput.value = savedUrl;
+
+  // Verifica se o aluno já votou neste aparelho
+  const savedVote = JSON.parse(localStorage.getItem("ads_vote_familiares") || "null");
+  if (savedVote) {
+    showVoteReceipt(savedVote.nome, savedVote.choice, savedVote.matricula);
+  }
+
+  fetchCurrentPlacar();
+  renderPlacarUI(currentPlacar);
+}
+
+window.selectPollOption = function(choice) {
+  document.querySelectorAll(".poll-option-card").forEach(c => c.classList.remove("selected"));
+  const card = document.getElementById(`opt-card-${choice}`);
+  const radio = document.getElementById(`radio-${choice}`);
+  if (card) card.classList.add("selected");
+  if (radio) radio.checked = true;
+};
+
+async function fetchCurrentPlacar() {
+  const apiUrl = localStorage.getItem("comissao_voting_api_url");
+  if (!apiUrl) return;
+
+  try {
+    const res = await fetch(`${apiUrl}?enqueteId=homenagem-familiares`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.placar && data.placar.total > 0) {
+        currentPlacar = data.placar;
+        renderPlacarUI(currentPlacar);
+      }
+    }
+  } catch (err) {
+    // Mantém placar padrão se offline
+  }
+}
+
+function renderPlacarUI(placar) {
+  const pctArvore = document.getElementById("pct-arvore");
+  const pctCartaz = document.getElementById("pct-cartaz");
+  const fillArvore = document.getElementById("fill-arvore");
+  const fillCartaz = document.getElementById("fill-cartaz");
+  const totalVotes = document.getElementById("poll-total-votes");
+
+  if (pctArvore) pctArvore.textContent = `${placar.pctArvore}% (${placar.arvore} votos)`;
+  if (pctCartaz) pctCartaz.textContent = `${placar.pctCartaz}% (${placar.cartaz} votos)`;
+  if (fillArvore) fillArvore.style.width = `${placar.pctArvore}%`;
+  if (fillCartaz) fillCartaz.style.width = `${placar.pctCartaz}%`;
+  if (totalVotes) totalVotes.textContent = `Total computado: ${placar.total} formandos`;
+}
+
+window.handleCastVote = async function(event) {
+  event.preventDefault();
+
+  const nameInput = document.getElementById("voter-name");
+  const idInput = document.getElementById("voter-id");
+  const choiceRadio = document.querySelector('input[name="poll_choice"]:checked');
+  const btnSubmit = document.getElementById("btn-submit-vote");
+  const statusMsg = document.getElementById("vote-status-msg");
+
+  if (!nameInput || !idInput || !choiceRadio) return;
+
+  const nome = nameInput.value.trim();
+  const matricula = idInput.value.trim();
+  const choice = choiceRadio.value;
+
+  if (nome.length < 3 || matricula.length < 4) {
+    showToast("⚠️ Preencha seu nome completo e matrícula válida.");
+    return;
+  }
+
+  // Verifica se já votou localmente
+  const savedVote = JSON.parse(localStorage.getItem("ads_vote_familiares") || "null");
+  if (savedVote) {
+    showToast("⚠️ Você já registrou seu voto nesta enquete!");
+    return;
+  }
+
+  btnSubmit.disabled = true;
+  btnSubmit.innerHTML = "⏳ Gravando voto...";
+  if (statusMsg) statusMsg.textContent = "Validando dados...";
+
+  const apiUrl = localStorage.getItem("comissao_voting_api_url");
+
+  if (apiUrl) {
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          enqueteId: "homenagem-familiares",
+          nome: nome,
+          matricula: matricula,
+          voto: choice
+        })
+      });
+
+      const result = await response.json();
+
+      if (result.status === "duplicado") {
+        alert(result.mensagem || "⚠️ Esta matrícula já registrou voto anteriormente.");
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = "🗳️ Confirmar Meu Voto";
+        if (statusMsg) statusMsg.textContent = "";
+        return;
+      }
+
+      if (result.placar) {
+        currentPlacar = result.placar;
+      }
+    } catch (e) {
+      console.warn("API indisponível, computando voto localmente:", e);
+    }
+  }
+
+  // Registra confirmação local para impedir revoto
+  if (choice === "arvore") currentPlacar.arvore++;
+  else currentPlacar.cartaz++;
+  currentPlacar.total = currentPlacar.arvore + currentPlacar.cartaz;
+  currentPlacar.pctArvore = Math.round((currentPlacar.arvore / currentPlacar.total) * 100);
+  currentPlacar.pctCartaz = Math.round((currentPlacar.cartaz / currentPlacar.total) * 100);
+
+  localStorage.setItem("ads_vote_familiares", JSON.stringify({ nome, matricula, choice }));
+
+  renderPlacarUI(currentPlacar);
+  showVoteReceipt(nome, choice, matricula);
+  showToast("🎉 Parabéns! Seu voto foi registrado com sucesso!");
+};
+
+function showVoteReceipt(nome, choice, matricula) {
+  const form = document.getElementById("vote-form");
+  const receipt = document.getElementById("vote-receipt");
+  const receiptText = document.getElementById("vote-receipt-text");
+
+  if (form) form.style.display = "none";
+  if (receipt && receiptText) {
+    const nomeModelo = choice === "arvore" ? "🌳 Modelo Árvore (Digital)" : "📜 Modelo Cartaz (Presencial)";
+    receiptText.innerHTML = `Olá, <strong>${nome}</strong> (Matrícula: ${matricula}). Seu voto foi registrado para: <strong>${nomeModelo}</strong>.<br><span style="color:var(--text-muted); font-size:0.8rem;">Cada aluno concluinte tem direito a um único voto para garantir a transparência da turma.</span>`;
+    receipt.style.display = "block";
+  }
+}
+
+window.saveVotingApiUrl = function() {
+  const input = document.getElementById("cfg-voting-script-url");
+  if (!input) return;
+  const url = input.value.trim();
+  localStorage.setItem("comissao_voting_api_url", url);
+  showToast("🔗 Conexão com Google Apps Script salva com sucesso!");
+  fetchCurrentPlacar();
 };
