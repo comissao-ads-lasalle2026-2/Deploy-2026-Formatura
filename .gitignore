@@ -1,0 +1,14 @@
+# Arquivos de sistema e ambiente
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+
+# Python
+__pycache__/
+*.pyc
+
+# Dependências temporárias
+node_modules/
+.vscode/
+.idea/

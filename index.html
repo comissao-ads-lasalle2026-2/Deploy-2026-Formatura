@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Formatura ADS 2026/2 • Unilasalle</title>
+  
+  <!-- SEO & Social Sharing (WhatsApp Card Preview) -->
+  <meta name="description" content="Portal oficial de informações da formatura de Análise e Desenvolvimento de Sistemas (ADS) - Unilasalle 2026/2. Cronograma, apitaço, votações, regras de fotos e contatos.">
+  <meta property="og:title" content="Portal Formatura ADS 2026/2 • Unilasalle">
+  <meta property="og:description" content="Acompanhe as datas do apitaço (16/11), votação dos familiares, prova de togas, músicas e avisos oficiais atualizados do WhatsApp.">
+  <meta property="og:type" content="website">
+  
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Personalizado -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+</head>
+<body>
+
+  <!-- Navegação Principal Fixa -->
+  <nav class="navbar">
+    <div class="container nav-content">
+      <a href="#" class="brand">
+        <div class="brand-icon">&lt;/&gt;</div>
+        <div class="brand-info">
+          <h1>ADS Formatura 2026/2</h1>
+          <span>Unilasalle Canoas</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#cronograma">Cronograma</a></li>
+        <li><a href="#apitaco">Apitaço (16/11)</a></li>
+        <li><a href="#votacao">Votação Pais</a></li>
+        <li><a href="#midia">Músicas & Fotos</a></li>
+        <li><a href="#mural">Avisos do Whats</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contatos">Contatos</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="btn-primary" onclick="copyWhatsSummary()" style="padding: 0.5rem 0.85rem; font-size: 0.8rem;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+          Copiar p/ Whats
+        </button>
+        <button id="theme-toggle" class="btn-icon" aria-label="Alternar tema">
+          <svg id="theme-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Banner de Alertas Urgentes -->
+  <section class="alert-banner">
+    <div class="container" id="alerts-container">
+      <!-- Inserido dinamicamente via JS -->
+    </div>
+  </section>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-tag">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        Comissão de Formatura • Análise e Desenvolvimento de Sistemas
+      </div>
+
+      <h2 class="hero-title">
+        Tudo o que você precisa saber sobre a nossa <span class="gradient-text">Formatura</span>
+      </h2>
+
+      <p class="hero-subtitle">
+        Central de informações destiladas do grupo oficial de WhatsApp para os formandos de ADS. Acompanhe datas, prazos, votações e orientações sem se perder no chat.
+      </p>
+
+      <!-- Contador para o Próximo Marco (Apitaço ADS) -->
+      <div class="countdown-box glass-panel">
+        <div class="countdown-label">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent-rose); animation:pulse-glow 1.5s infinite;"></span>
+          Contagem Regressiva para o Apitaço de ADS (16/11 às 18h30)
+        </div>
+        <div class="countdown-grid">
+          <div class="countdown-item">
+            <div class="countdown-val" id="cd-days">00</div>
+            <div class="countdown-sub">Dias</div>
+          </div>
+          <div class="countdown-item">
+            <div class="countdown-val" id="cd-hours">00</div>
+            <div class="countdown-sub">Horas</div>
+          </div>
+          <div class="countdown-item">
+            <div class="countdown-val" id="cd-mins">00</div>
+            <div class="countdown-sub">Minutos</div>
+          </div>
+          <div class="countdown-item">
+            <div class="countdown-val" id="cd-secs">00</div>
+            <div class="countdown-sub">Segundos</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de Busca Rápida -->
+      <div style="max-width: 520px; margin: 0 auto 2.5rem; position: relative;">
+        <input 
+          type="text" 
+          id="portal-search" 
+          placeholder="🔍 Buscar por: 'toga', 'apitaço', 'voto', 'boleto', 'reprovação'..." 
+          style="width: 100%; padding: 0.85rem 1.25rem; border-radius: var(--radius-full); border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); font-size: 0.9rem; outline: none; box-shadow: var(--shadow-card);"
+        >
+      </div>
+
+      <!-- Estatísticas Rápidas -->
+      <div class="stats-grid" id="stats-container">
+        <!-- Inserido dinamicamente -->
+      </div>
+
+      <!-- Filtro de Exibição (ADS vs Geral) -->
+      <div class="filter-tabs-wrapper">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-mode="ads">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            Foco ADS (Análise e Dev. Sistemas)
+          </button>
+          <button class="filter-tab" data-mode="all">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            Visão Geral (Todas as Engenharias/TI)
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- SEÇÃO: CRONOGRAMA & TIMELINE -->
+    <section id="cronograma" class="section">
+      <div class="section-header">
+        <span class="section-tag">Calendário Oficial</span>
+        <h3 class="section-title">Linha do Tempo dos Formandos</h3>
+        <p class="section-desc">Todos os marcos da contratação até o dia da colação de grau no Centro de Eventos.</p>
+      </div>
+
+      <div class="timeline" id="timeline-container">
+        <!-- Timeline populada via JS -->
+      </div>
+    </section>
+
+    <!-- SEÇÃO: APITAÇO DE ADS (DESTAQUE) -->
+    <section id="apitaco" class="section">
+      <div class="glass-panel apitaco-box">
+        <div class="section-header" style="margin-bottom: 1rem;">
+          <span class="section-tag" style="color:var(--accent-rose);">Ação Imediata</span>
+          <h3 class="section-title">Apitaço ADS • Segunda-feira, 16/11 às 19h</h3>
+          <p class="section-desc">
+            Ponto de encontro na <strong>Sala Google às 18h30</strong> (30 min de antecedência). A produtora estará com as fantasias e adereços prontos para o início da festa e registros fotográficos!
+          </p>
+        </div>
+
+        <div id="apitaco-info">
+          <!-- Inserido dinamicamente -->
+        </div>
+
+        <h4 style="font-size: 1.05rem; font-weight: 700; margin-top: 1.5rem; color: var(--accent-cyan);">
+          Orientações Práticas para a Turma de ADS:
+        </h4>
+        <div id="apitaco-orientacoes">
+          <!-- Inserido dinamicamente -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO: VOTAÇÃO VÍDEO DOS FAMILIARES -->
+    <section id="votacao" class="section">
+      <div class="section-header">
+        <span class="section-tag" style="color:var(--accent-amber);">Enquete Aberta até 20/11</span>
+        <h3 class="section-title">Vídeo de Homenagem aos Familiares</h3>
+        <p class="section-desc">
+          A comissão precisa votar em consenso entre todas as turmas da nossa solenidade qual formato será adotado no telão. Veja os modelos gravados no Vimeo:
+        </p>
+      </div>
+
+      <div class="voting-grid" id="voting-container">
+        <!-- Cards das opções inseridos via JS -->
+      </div>
+    </section>
+
+    <!-- SEÇÃO: GUIA DE MÍDIA & PROVA DE TOGAS -->
+    <section id="midia" class="section">
+      <div class="section-header">
+        <span class="section-tag">Regras da Produtora SP</span>
+        <h3 class="section-title">Músicas, Fotos e Prova de Togas</h3>
+        <p class="section-desc">Orientações obrigatórias para não ter fotos ou músicas reprovadas no portal do formando.</p>
+      </div>
+
+      <div class="media-guide-grid" id="media-guide-container">
+        <!-- Guias inseridos via JS -->
+      </div>
+    </section>
+
+    <!-- SEÇÃO: MURAL DE AVISOS DO WHATSAPP -->
+    <section id="mural" class="section">
+      <div class="section-header">
+        <span class="section-tag">Histórico de Mensagens Relevantes</span>
+        <h3 class="section-title">Mural de Atualizações do Chat</h3>
+        <p class="section-desc">Mensagens oficiais dos organizadores, produtora e comissão extraídas diretamente das conversas do grupo.</p>
+      </div>
+
+      <div class="feed-filters">
+        <button class="feed-filter-btn active" data-tag="todos">Todas</button>
+        <button class="feed-filter-btn" data-tag="ads">Exclusivo ADS</button>
+        <button class="feed-filter-btn" data-tag="produtora">SP Produtora</button>
+        <button class="feed-filter-btn" data-tag="unilasalle">Unilasalle Eventos</button>
+      </div>
+
+      <div class="feed-list" id="feed-container">
+        <!-- Feed de mensagens via JS -->
+      </div>
+    </section>
+
+    <!-- SEÇÃO: PERGUNTAS FREQUENTES (FAQ) -->
+    <section id="faq" class="section">
+      <div class="section-header">
+        <span class="section-tag">Tire suas Dúvidas</span>
+        <h3 class="section-title">Perguntas Frequentes dos Colegas</h3>
+        <p class="section-desc">Dúvidas comuns que surgiram no grupo de formandos respondidas de forma direta.</p>
+      </div>
+
+      <div class="faq-list" id="faq-container">
+        <!-- FAQ via JS -->
+      </div>
+    </section>
+
+    <!-- SEÇÃO: CONTATOS & LINKS ÚTEIS -->
+    <section id="contatos" class="section">
+      <div class="section-header">
+        <span class="section-tag">Canais Oficiais</span>
+        <h3 class="section-title">Contatos & Suporte da Formatura</h3>
+        <p class="section-desc">Acesso direto ao WhatsApp do Setor de Eventos, Estúdio SP Produtora e abertura de tickets no CASA.</p>
+      </div>
+
+      <div class="contacts-grid" id="contacts-container">
+        <!-- Contatos via JS -->
+      </div>
+    </section>
+
+    <!-- SEÇÃO ESPECIAL: INSTRUÇÕES PARA A COMISSÃO ATUALIZAR -->
+    <section class="admin-box">
+      <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom: 0.75rem;">
+        <span style="font-size:1.5rem;">⚙️</span>
+        <div>
+          <h4 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan);">Área da Comissão: Como atualizar o portal?</h4>
+          <p style="font-size: 0.85rem; color: var(--text-secondary);">
+            Você pode exportar a conversa do WhatsApp a qualquer momento e atualizar os dados do site em segundos.
+          </p>
+        </div>
+      </div>
+
+      <div style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6;">
+        <p>1. No WhatsApp do grupo, vá em <strong>Mais opções → Exportar conversa (sem mídia)</strong> e salve o arquivo <code>chat.txt</code> ou <code>chat.md</code> na pasta <code>Whats exportado/</code>.</p>
+        <p>2. Execute o script automatizado no terminal para extrair novidades e avisos:</p>
+      </div>
+
+      <div class="code-snippet">
+        <code>python scripts/atualizar_portal.py</code>
+        <button class="btn-secondary" onclick="navigator.clipboard.writeText('python scripts/atualizar_portal.py'); showToast('Comando copiado!');" style="padding:0.25rem 0.6rem; font-size:0.75rem;">
+          Copiar Comando
+        </button>
+      </div>
+
+      <p style="font-size:0.8rem; color:var(--text-muted);">
+        O script lê automaticamente os avisos de Eventos Unilassale e SP Produtora e mantém a base <code>assets/js/data.js</code> sempre atualizada e sincronizada com o GitHub Pages!
+      </p>
+    </section>
+
+  </main>
+
+  <!-- Modal para visualização de vídeos do Vimeo -->
+  <div class="modal-backdrop" id="video-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-title">Exemplo do Vídeo</h4>
+        <button class="btn-icon" id="modal-close" style="width:32px; height:32px;">✕</button>
+      </div>
+      <div class="modal-body" id="modal-player">
+        <!-- Iframe do Vimeo inserido dinamicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Rodapé -->
+  <footer class="footer">
+    <div class="container">
+      <p>🎓 <strong>Portal da Formatura ADS 2026/2</strong> • Universidade La Salle (Canoas/RS)</p>
+      <p style="margin-top:0.25rem;">Criado com carinho pela Comissão de Formatura de Análise e Desenvolvimento de Sistemas.</p>
+      <ul class="footer-links">
+        <li><a href="#cronograma">Cronograma</a></li>
+        <li><a href="#apitaco">Apitaço</a></li>
+        <li><a href="#votacao">Votação Pais</a></li>
+        <li><a href="#midia">Regras da Produtora</a></li>
+        <li><a href="#contatos">Contatos</a></li>
+      </ul>
+      <p style="margin-top:1.5rem; font-size:0.75rem; color:var(--text-muted);">
+        Última sincronização do chat: 13/11/2026 às 15:00
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
