@@ -817,11 +817,11 @@ window.copyBadgeShareText = function() {
    20. SISTEMA DE VOTAÇÃO E ENQUETES (VOTO ÚNICO COM GOOGLE SHEETS / LOCAL)
    ========================================================================== */
 let currentPlacar = {
-  total: 18,
-  arvore: 11,
-  cartaz: 7,
-  pctArvore: 61,
-  pctCartaz: 39
+  total: 0,
+  arvore: 0,
+  cartaz: 0,
+  pctArvore: 0,
+  pctCartaz: 0
 };
 
 function initVotingSystem() {
@@ -872,11 +872,19 @@ function renderPlacarUI(placar) {
   const fillCartaz = document.getElementById("fill-cartaz");
   const totalVotes = document.getElementById("poll-total-votes");
 
-  if (pctArvore) pctArvore.textContent = `${placar.pctArvore}% (${placar.arvore} votos)`;
-  if (pctCartaz) pctCartaz.textContent = `${placar.pctCartaz}% (${placar.cartaz} votos)`;
-  if (fillArvore) fillArvore.style.width = `${placar.pctArvore}%`;
-  if (fillCartaz) fillCartaz.style.width = `${placar.pctCartaz}%`;
-  if (totalVotes) totalVotes.textContent = `Total computado: ${placar.total} formandos`;
+  const total = (placar && placar.total) ? placar.total : 0;
+  const pctA = total > 0 ? (placar.pctArvore || 0) : 0;
+  const pctC = total > 0 ? (placar.pctCartaz || 0) : 0;
+
+  if (pctArvore) pctArvore.textContent = total > 0 ? `${pctA}% (${placar.arvore || 0} votos)` : "0 votos";
+  if (pctCartaz) pctCartaz.textContent = total > 0 ? `${pctC}% (${placar.cartaz || 0} votos)` : "0 votos";
+  if (fillArvore) fillArvore.style.width = `${pctA}%`;
+  if (fillCartaz) fillCartaz.style.width = `${pctC}%`;
+  if (totalVotes) {
+    totalVotes.textContent = total > 0 
+      ? `Total computado: ${total} formando(s)` 
+      : `Aguardando primeiros votos da turma`;
+  }
 }
 
 window.handleCastVote = async function(event) {
