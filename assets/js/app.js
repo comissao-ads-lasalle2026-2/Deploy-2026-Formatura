@@ -803,7 +803,7 @@ window.copyBadgeShareText = function() {
                `🏛 Instituição: Universidade La Salle (Canoas/RS)\n` +
                `🗓 Colação de Grau: Março/2027\n\n` +
                `Acompanhe todos os detalhes da nossa formatura no portal oficial:\n` +
-               `https://comissao-ads-lasalle2026-2.github.io/Deploy-2026-Formatura-ADS-La-Salle/`;
+               `https://comissao-ads-lasalle2026-2.github.io/Deploy-2026-Formatura/`;
 
   navigator.clipboard.writeText(text).then(() => {
     showToast("🎉 Texto do Card copiado para o WhatsApp!");

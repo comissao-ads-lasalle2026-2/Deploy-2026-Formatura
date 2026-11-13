@@ -1,7 +1,7 @@
 # 🎓 Portal de Informações da Formatura - ADS 2026/2 (Unilasalle)
 
 > **Deploy Oficial em Produção:**  
-> 🌐 [https://comissao-ads-lasalle2026-2.github.io/Deploy-2026-Formatura-ADS-La-Salle/](https://comissao-ads-lasalle2026-2.github.io/Deploy-2026-Formatura-ADS-La-Salle/)
+> 🌐 [https://comissao-ads-lasalle2026-2.github.io/Deploy-2026-Formatura/](https://comissao-ads-lasalle2026-2.github.io/Deploy-2026-Formatura/)
 
 ---
 
