@@ -127,8 +127,31 @@ def parse_chat_messages(filepath):
     print(f"[+] Total de mensagens identificadas: {len(updates)}")
     return filter_relevant_announcements(updates)
 
+def sanitize_author_and_text(autor, texto):
+    """Anonimiza números de telefone de colegas para proteger a privacidade."""
+    if "9456-6336" in autor or "paola" in autor.lower():
+        autor = "Paola (SP Produtora)"
+    elif "9458-4848" in autor:
+        autor = "Equipe SP Produtora"
+    elif "9571-9015" in autor or "eventos" in autor.lower():
+        autor = "Setor de Eventos Unilasalle"
+    elif "você" in autor.lower():
+        autor = "Comissão ADS"
+    elif re.match(r"^\+55", autor.strip()):
+        autor = "Colega Formando"
+
+    # Preserva apenas os números públicos oficiais (Eventos e Estúdio SP)
+    def mask_phone(match):
+        phone = match.group(0)
+        if "9571-9015" in phone or "98210" in phone or "9821-0021" in phone:
+            return phone
+        return "[Contato Ocultado]"
+
+    texto_limpo = re.sub(r"\+55\s*\d{2}\s*9?\d{4,5}[-\s]?\d{4}", mask_phone, texto)
+    return autor, texto_limpo
+
 def filter_relevant_announcements(messages):
-    """Filtra comunicados com valor informativo relevante."""
+    """Filtra comunicados com valor informativo relevante e anonimiza dados sensíveis."""
     relevant = []
     
     keywords_urgentes = [
@@ -139,17 +162,18 @@ def filter_relevant_announcements(messages):
     ]
     
     for m in messages:
-        autor = m["autor"]
-        corpo = " ".join(m["linhas"]).strip()
-        corpo_lower = corpo.lower()
+        raw_autor = m["autor"]
+        raw_corpo = " ".join(m["linhas"]).strip()
+        corpo_lower = raw_corpo.lower()
         
-        if len(corpo) < 25 or "mensagem apagada" in corpo_lower:
+        if len(raw_corpo) < 25 or "mensagem apagada" in corpo_lower:
             continue
             
-        is_official = any(x in autor.lower() for x in ["eventos", "produtora", "paola", "matheus", "lasalle", "você", "comissão"])
+        is_official = any(x in raw_autor.lower() for x in ["eventos", "produtora", "paola", "matheus", "lasalle", "você", "comissão"])
         has_keywords = any(k in corpo_lower for k in keywords_urgentes)
         
         if is_official or has_keywords:
+            autor, corpo = sanitize_author_and_text(raw_autor, raw_corpo)
             tag = "Geral"
             if "análise" in corpo_lower or "ads" in corpo_lower:
                 tag = "ADS Exclusivo"
@@ -161,7 +185,8 @@ def filter_relevant_announcements(messages):
                 tag = "Financeiro"
                 
             first_line = m["linhas"][0] if m["linhas"] else "Aviso de Formatura"
-            titulo = first_line[:75] + ("..." if len(first_line) > 75 else "")
+            _, first_line_sanitized = sanitize_author_and_text(raw_autor, first_line)
+            titulo = first_line_sanitized[:75] + ("..." if len(first_line_sanitized) > 75 else "")
             titulo = re.sub(r"^[⚠️✳️✨📸📌•\s>_]+", "", titulo).strip()
             if not titulo or len(titulo) < 6:
                 titulo = f"Atualização por {autor}"

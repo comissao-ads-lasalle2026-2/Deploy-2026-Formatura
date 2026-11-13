@@ -12,3 +12,9 @@ __pycache__/
 node_modules/
 .vscode/
 .idea/
+
+# Dados brutos sensíveis do WhatsApp (conversas e anexos privados)
+Whats exportado/
+*.zip
+chat.txt
+chat.md
