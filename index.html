@@ -2,7 +2,7 @@
 <html lang="pt-BR" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>Portal Formatura ADS 2026/2 • Unilasalle</title>
   
   <!-- SEO & Social Sharing (WhatsApp Card Preview) -->
@@ -49,17 +49,33 @@
         <button class="arcade-easter-btn" onclick="openArcadeModal()" aria-label="Easter Egg Arcade Retrô" title="🕹️ Easter Egg: Fliperama ADS Retrô">
           <span class="arcade-icon-glow">👾</span>
         </button>
-        <button class="btn-secondary" onclick="openThemeModal()" style="padding: 0.45rem 0.75rem; font-size: 0.8rem; display:inline-flex; align-items:center; gap:0.35rem;" title="Escolher Tema Visual">
-          <span>🎨</span> <span>Temas</span>
+        <button class="btn-secondary nav-btn-action" onclick="openThemeModal()" style="padding: 0.45rem 0.75rem; font-size: 0.8rem; display:inline-flex; align-items:center; gap:0.35rem;" title="Escolher Tema Visual">
+          <span>🎨</span> <span class="nav-btn-text">Temas</span>
         </button>
-        <button class="btn-primary" onclick="copyWhatsSummary()" style="padding: 0.5rem 0.85rem; font-size: 0.8rem;">
+        <button class="btn-primary nav-btn-action" onclick="copyWhatsSummary()" style="padding: 0.5rem 0.85rem; font-size: 0.8rem;" title="Copiar resumo para WhatsApp">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
-          Copiar p/ Whats
+          <span class="nav-btn-text">Whats</span>
         </button>
-        <button id="theme-toggle" class="btn-icon" aria-label="Alternar tema rápido">
+        <button id="theme-toggle" class="btn-icon" aria-label="Alternar tema rápido" title="Alternar tema">
           <svg id="theme-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"></svg>
         </button>
       </div>
+    </div>
+  </nav>
+
+  <!-- Subnavegação Rápida Horizontal (Exclusiva Mobile & Tablet) -->
+  <nav class="mobile-quick-nav" aria-label="Navegação rápida por seções">
+    <div class="quick-nav-track">
+      <a href="#cronograma" class="quick-nav-pill">📅 Cronograma</a>
+      <a href="#apitaco" class="quick-nav-pill highlight">📢 Apitaço (16/11)</a>
+      <a href="#votacao" class="quick-nav-pill">🗳️ Votação Pais</a>
+      <a href="#midia" class="quick-nav-pill">🎵 Músicas & Togas</a>
+      <a href="#checklist" class="quick-nav-pill">✅ Checklist</a>
+      <a href="#simulador" class="quick-nav-pill">💰 Simulador</a>
+      <a href="#badge" class="quick-nav-pill">🎓 Meu Card</a>
+      <a href="#mural" class="quick-nav-pill">💬 Avisos Whats</a>
+      <a href="#faq" class="quick-nav-pill">❓ FAQ</a>
+      <a href="#contatos" class="quick-nav-pill">📞 Contatos</a>
     </div>
   </nav>
 
@@ -738,21 +754,21 @@
 
         <!-- Controles Virtuais Pinball -->
         <div class="arcade-touch-controls">
-          <button class="btn-arcade-touch btn-arcade-launch" onclick="launchPinballBall()">
+          <button class="btn-arcade-touch btn-arcade-launch" onclick="launchPinballBall()" onpointerdown="event.preventDefault(); launchPinballBall();">
             🚀 LANÇAR BOLA (Espaço / Puxar)
           </button>
           <div class="pinball-touch-row">
-            <button class="btn-arcade-touch" onpointerdown="setPinballFlipper('left', true)" onpointerup="setPinballFlipper('left', false)" onpointercancel="setPinballFlipper('left', false)">
-              ◀ FLIP ESQUERDO (A / ←)
+            <button class="btn-arcade-touch btn-flipper-touch" onpointerdown="event.preventDefault(); setPinballFlipper('left', true)" onpointerup="setPinballFlipper('left', false)" onpointercancel="setPinballFlipper('left', false)" onpointerleave="setPinballFlipper('left', false)">
+              ◀ FLIP ESQ (A / ←)
             </button>
-            <button class="btn-arcade-touch" onpointerdown="setPinballFlipper('right', true)" onpointerup="setPinballFlipper('right', false)" onpointercancel="setPinballFlipper('right', false)">
-              FLIP DIREITO ▶ (D / →)
+            <button class="btn-arcade-touch btn-flipper-touch" onpointerdown="event.preventDefault(); setPinballFlipper('right', true)" onpointerup="setPinballFlipper('right', false)" onpointercancel="setPinballFlipper('right', false)" onpointerleave="setPinballFlipper('right', false)">
+              FLIP DIR ▶ (D / →)
             </button>
           </div>
         </div>
 
         <p class="arcade-hints">
-          💡 <strong>Como Jogar:</strong> No Celular/Tablet toque nas laterais da tela ou nos botões acima. No PC use as setas do teclado (ou A e D) e Espaço para lançar.
+          💡 <strong>Como Jogar:</strong> No Celular toque diretamente nas laterais da tela ou nos botões de flipper. No PC use as setas (A e D) e Espaço.
         </p>
       </div>
 
@@ -773,33 +789,33 @@
         </div>
 
         <!-- Controles Virtuais Bomber-ADS -->
-        <div class="arcade-touch-controls" style="margin-top:0.75rem;">
-          <div style="display:flex; justify-content:space-around; align-items:center; gap:1rem;">
+        <div class="arcade-touch-controls" style="margin-top:0.6rem;">
+          <div class="bomber-controls-wrap">
             <!-- D-PAD -->
             <div class="dpad-container">
               <div></div>
-              <button class="dpad-btn" onpointerdown="setBomberMove('up', true)" onpointerup="setBomberMove('up', false)">▲</button>
+              <button class="dpad-btn" onpointerdown="event.preventDefault(); setBomberMove('up', true)" onpointerup="setBomberMove('up', false)" onpointercancel="setBomberMove('up', false)" onpointerleave="setBomberMove('up', false)">▲</button>
               <div></div>
-              <button class="dpad-btn" onpointerdown="setBomberMove('left', true)" onpointerup="setBomberMove('left', false)">◀</button>
-              <div style="display:flex; align-items:center; justify-content:center; color:#64748b; font-size:0.7rem;">+</div>
-              <button class="dpad-btn" onpointerdown="setBomberMove('right', true)" onpointerup="setBomberMove('right', false)">▶</button>
+              <button class="dpad-btn" onpointerdown="event.preventDefault(); setBomberMove('left', true)" onpointerup="setBomberMove('left', false)" onpointercancel="setBomberMove('left', false)" onpointerleave="setBomberMove('left', false)">◀</button>
+              <div class="dpad-center-indicator">+</div>
+              <button class="dpad-btn" onpointerdown="event.preventDefault(); setBomberMove('right', true)" onpointerup="setBomberMove('right', false)" onpointercancel="setBomberMove('right', false)" onpointerleave="setBomberMove('right', false)">▶</button>
               <div></div>
-              <button class="dpad-btn" onpointerdown="setBomberMove('down', true)" onpointerup="setBomberMove('down', false)">▼</button>
+              <button class="dpad-btn" onpointerdown="event.preventDefault(); setBomberMove('down', true)" onpointerup="setBomberMove('down', false)" onpointercancel="setBomberMove('down', false)" onpointerleave="setBomberMove('down', false)">▼</button>
               <div></div>
             </div>
 
             <!-- BOTÃO BOMBA -->
-            <div>
-              <button class="btn-arcade-touch btn-arcade-launch" onclick="dropBomberBomb()" style="width:110px; height:80px; flex-direction:column; font-size:0.95rem;">
-                <span style="font-size:1.8rem;">💣</span>
-                BOMBA
+            <div class="bomber-action-wrap">
+              <button class="btn-arcade-touch btn-arcade-launch btn-bomb-action" onclick="dropBomberBomb()" onpointerdown="event.preventDefault(); dropBomberBomb();">
+                <span style="font-size:1.8rem; line-height:1;">💣</span>
+                <span>BOMBA</span>
               </button>
             </div>
           </div>
         </div>
 
         <p class="arcade-hints">
-          💡 <strong>Como Jogar:</strong> Destrua os blocos de código ({}) com bombas para achar o Diploma ADS! Evite os bugs 👾. No PC use WASD / Setas e Espaço.
+          💡 <strong>Como Jogar:</strong> Use o D-Pad para andar e o botão para plantar bombas nos blocos ({})! Evite os bugs 👾. No PC use WASD / Setas e Espaço.
         </p>
       </div>
 

@@ -228,13 +228,24 @@
       pBall.vy = -15 - Math.random() * 3;
       pBall.vx = (Math.random() - 0.5) * 1.5;
       playRetroSound("launch");
+      if (navigator.vibrate) {
+        try { navigator.vibrate(25); } catch(e) {}
+      }
     }
   };
+
+  // Suporte a Multitouch Avançado para Celular / Tablet
+  const pActiveCanvasPointers = new Map();
 
   window.setPinballFlipper = function(side, active) {
     if (side === "left") pLeftFlipper.active = active;
     if (side === "right") pRightFlipper.active = active;
-    if (active) playRetroSound("flipper");
+    if (active) {
+      playRetroSound("flipper");
+      if (navigator.vibrate) {
+        try { navigator.vibrate(15); } catch(e) {}
+      }
+    }
   };
 
   let pKeyListenersBound = false;
@@ -265,29 +276,43 @@
       }
     });
 
-    // Touch na tela do canvas
+    // Touch direto na tela do canvas com multitouch real e sem conflito de dedos
     const canvas = document.getElementById("pinball-canvas");
     if (canvas) {
       canvas.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        try { canvas.setPointerCapture(e.pointerId); } catch(err) {}
+
         const rect = canvas.getBoundingClientRect();
         const touchX = ((e.clientX - rect.left) / rect.width) * P_WIDTH;
-        if (touchX > 310) {
+        const touchY = ((e.clientY - rect.top) / rect.height) * P_HEIGHT;
+
+        if (touchX > 300 && touchY > 380) {
+          // Lançador lateral
+          pActiveCanvasPointers.set(e.pointerId, "launch");
           launchPinballBall();
         } else if (touchX < P_WIDTH / 2) {
+          pActiveCanvasPointers.set(e.pointerId, "left");
           setPinballFlipper("left", true);
         } else {
+          pActiveCanvasPointers.set(e.pointerId, "right");
           setPinballFlipper("right", true);
         }
-      });
+      }, { passive: false });
 
-      canvas.addEventListener("pointerup", (e) => {
-        setPinballFlipper("left", false);
-        setPinballFlipper("right", false);
-      });
-      canvas.addEventListener("pointercancel", (e) => {
-        setPinballFlipper("left", false);
-        setPinballFlipper("right", false);
-      });
+      function onPinballPointerRelease(e) {
+        const action = pActiveCanvasPointers.get(e.pointerId);
+        if (action === "left") {
+          setPinballFlipper("left", false);
+        } else if (action === "right") {
+          setPinballFlipper("right", false);
+        }
+        pActiveCanvasPointers.delete(e.pointerId);
+      }
+
+      canvas.addEventListener("pointerup", onPinballPointerRelease);
+      canvas.addEventListener("pointercancel", onPinballPointerRelease);
+      canvas.addEventListener("pointerleave", onPinballPointerRelease);
     }
   }
 
@@ -766,6 +791,46 @@
       if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") bKeys.ArrowLeft = false;
       if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") bKeys.ArrowRight = false;
     });
+
+    // Touch direto no canvas do Bomber-ADS
+    const canvas = document.getElementById("bomber-canvas");
+    if (canvas) {
+      canvas.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        const touchX = ((e.clientX - rect.left) / rect.width) * (B_GRID * B_TILE);
+        const touchY = ((e.clientY - rect.top) / rect.height) * (B_GRID * B_TILE);
+
+        const dx = touchX - bPlayer.px;
+        const dy = touchY - bPlayer.py;
+
+        // Se tocou muito próximo do boneco, solta a bomba
+        if (Math.hypot(dx, dy) < 28) {
+          dropBomberBomb();
+          return;
+        }
+
+        // Caso contrário, move na direção predominante
+        if (Math.abs(dx) > Math.abs(dy)) {
+          if (dx > 0) setBomberMove("right", true);
+          else setBomberMove("left", true);
+        } else {
+          if (dy > 0) setBomberMove("down", true);
+          else setBomberMove("up", true);
+        }
+      }, { passive: false });
+
+      function stopCanvasMove() {
+        bKeys.ArrowUp = false;
+        bKeys.ArrowDown = false;
+        bKeys.ArrowLeft = false;
+        bKeys.ArrowRight = false;
+      }
+
+      canvas.addEventListener("pointerup", stopCanvasMove);
+      canvas.addEventListener("pointercancel", stopCanvasMove);
+      canvas.addEventListener("pointerleave", stopCanvasMove);
+    }
   }
 
   window.setBomberMove = function(dir, pressed) {
@@ -773,6 +838,9 @@
     if (dir === "down") bKeys.ArrowDown = pressed;
     if (dir === "left") bKeys.ArrowLeft = pressed;
     if (dir === "right") bKeys.ArrowRight = pressed;
+    if (pressed && navigator.vibrate) {
+      try { navigator.vibrate(10); } catch(e) {}
+    }
   };
 
   window.dropBomberBomb = function() {
@@ -789,6 +857,9 @@
       timer: 110 // ~1.8 segundos
     });
     playRetroSound("flipper");
+    if (navigator.vibrate) {
+      try { navigator.vibrate(30); } catch(e) {}
+    }
   };
 
   function updateBomberPhysics() {
