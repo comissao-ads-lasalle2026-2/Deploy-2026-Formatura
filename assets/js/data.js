@@ -50,6 +50,64 @@ const GRADUATION_DATA = {
     { label: "Colação de Grau", valor: "06/03 às 15h", detalhe: "Ensaio: 03/03 às 19h" }
   ],
 
+  // Esteira de Marcos Consecutivos Automáticos (O relógio e os descritivos transitam sozinhos cronologicamente)
+  marcosConsecutivos: [
+    {
+      id: "votacao-pais",
+      titulo: "Contagem Regressiva: Encerramento da Votação do Vídeo dos Pais (20/11 às 23h59)",
+      dataAlvo: "2026-11-20T23:59:59-03:00",
+      descricao: "Definição de consenso entre as turmas: Modelo Árvore (Digital) vs Modelo Cartaz (Presencial na Prova de Togas). Registre seu voto!",
+      estatisticaValor: "Votação dos Pais",
+      estatisticaDetalhe: "Encerra 20/11 (Sexta)",
+      linkAcao: "#votacao"
+    },
+    {
+      id: "enade",
+      titulo: "Contagem Regressiva: Prova do ENADE 2026 (29/11 às 13h)",
+      dataAlvo: "2026-11-29T13:00:00-03:00",
+      descricao: "Atenção formandos de ADS convocados para o Exame Nacional de Desempenho dos Estudantes no campus.",
+      estatisticaValor: "Prova do ENADE",
+      estatisticaDetalhe: "29/11 às 13h",
+      linkAcao: "#cronograma"
+    },
+    {
+      id: "prova-togas",
+      titulo: "Contagem Regressiva: Prova de Togas no Campus Unilasalle (12/12 às 09h)",
+      dataAlvo: "2026-12-12T09:00:00-03:00",
+      descricao: "Sessão oficial com a SP Produtora no campus. Fotos individuais, com a turma e familiares (até 8 convidados). Chegue com 30min de antecedência!",
+      estatisticaValor: "Prova de Togas",
+      estatisticaDetalhe: "12/12 a partir das 09h",
+      linkAcao: "#midia"
+    },
+    {
+      id: "upload-midia",
+      titulo: "Contagem Regressiva: Prazo de Músicas e Fotos na SP Produtora (24/01 às 23h59)",
+      dataAlvo: "2027-01-24T23:59:59-03:00",
+      descricao: "Envio obrigatório no Portal do Formando da SP Produtora: MP3 da sua música de entrada individual (cortada em 30s) e sua foto pessoal para o telão.",
+      estatisticaValor: "Músicas & Fotos SP",
+      estatisticaDetalhe: "Até 24/01/2027",
+      linkAcao: "#midia"
+    },
+    {
+      id: "ensaio-geral",
+      titulo: "Contagem Regressiva: Ensaio Geral da Solenidade (03/03 às 19h)",
+      dataAlvo: "2027-03-03T19:00:00-03:00",
+      descricao: "Alinhamento obrigatório de entrada das turmas, ordem de chamada, juramento acadêmico e oradores no Centro de Eventos.",
+      estatisticaValor: "Ensaio Geral",
+      estatisticaDetalhe: "03/03/2027 às 19h",
+      linkAcao: "#cronograma"
+    },
+    {
+      id: "colacao-solene",
+      titulo: "Contagem Regressiva para a Colação de Grau ADS 2026/2! 🎓",
+      dataAlvo: "2027-03-06T15:00:00-03:00",
+      descricao: "O momento da grande vitória! Cerimônia solene de formatura no Centro de Eventos Unilasalle. Vistam as togas e peguem o diploma!",
+      estatisticaValor: "Colação Solene",
+      estatisticaDetalhe: "06/03/2027 às 15h",
+      linkAcao: "#cronograma"
+    }
+  ],
+
   // Linha do tempo oficial dos eventos
   cronograma: [
     {

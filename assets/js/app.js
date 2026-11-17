@@ -154,40 +154,67 @@ function renderStats() {
 }
 
 /* ==========================================================================
-   4. CONTAGEM REGRESSIVA PARA O PRÓXIMO EVENTO (APITAÇO ADS)
+   4. CONTAGEM REGRESSIVA PERPÉTUA (MARCOS CONSECUTIVOS AUTOMÁTICOS)
    ========================================================================== */
+function getActiveMarco(now) {
+  const marcos = (GRADUATION_DATA && GRADUATION_DATA.marcosConsecutivos) ? GRADUATION_DATA.marcosConsecutivos : [];
+  for (let i = 0; i < marcos.length; i++) {
+    const targetMs = new Date(marcos[i].dataAlvo).getTime();
+    if (targetMs > now) {
+      return marcos[i];
+    }
+  }
+  return null; // Quando todos os marcos forem concluídos (após a colação de grau)
+}
+
+function updateNextEventStat(marco) {
+  const statCards = document.querySelectorAll(".stat-card");
+  statCards.forEach(card => {
+    const label = card.querySelector(".stat-label");
+    if (label && label.textContent.trim().toLowerCase().includes("próximo marco")) {
+      const val = card.querySelector(".stat-value");
+      const det = card.querySelector(".stat-detail");
+      if (val && marco.estatisticaValor) val.textContent = marco.estatisticaValor;
+      if (det && marco.estatisticaDetalhe) det.textContent = marco.estatisticaDetalhe;
+    }
+  });
+}
+
 function initCountdown() {
-  const targetDateStr = (GRADUATION_DATA && GRADUATION_DATA.meta && GRADUATION_DATA.meta.contagemRegressivaAlvo) 
-    ? GRADUATION_DATA.meta.contagemRegressivaAlvo 
-    : "2026-11-20T23:59:59-03:00";
-  let target = new Date(targetDateStr).getTime();
-  const labelEl = document.getElementById("countdown-title-text");
+  const titleEl = document.getElementById("countdown-title-text");
+  const descEl = document.getElementById("countdown-desc-text");
+  const linkEl = document.getElementById("countdown-link-action");
+  let lastMarcoId = null;
 
   function update() {
     const now = new Date().getTime();
-    let diff = target - now;
+    const marco = getActiveMarco(now);
 
-    // Se já passou do prazo da votação dos pais (20/11), transiciona automaticamente para a Prova de Togas (12/12)
-    if (diff <= 0) {
-      const togaDate = new Date("2026-12-12T09:00:00-03:00").getTime();
-      if (now < togaDate) {
-        target = togaDate;
-        diff = togaDate - now;
-        if (labelEl) {
-          labelEl.textContent = "Contagem Regressiva para a Prova de Togas no Campus (12/12 às 09h)";
-        }
-      } else {
-        document.getElementById("cd-days").textContent = "00";
-        document.getElementById("cd-hours").textContent = "00";
-        document.getElementById("cd-mins").textContent = "00";
-        document.getElementById("cd-secs").textContent = "00";
-        return;
-      }
-    } else {
-      if (labelEl && GRADUATION_DATA && GRADUATION_DATA.meta && GRADUATION_DATA.meta.contagemRegressivaTitulo) {
-        labelEl.textContent = GRADUATION_DATA.meta.contagemRegressivaTitulo;
-      }
+    if (!marco) {
+      if (titleEl) titleEl.textContent = "🎓 Parabéns Formandos de ADS 2026/2! Formatura Concluída!";
+      if (descEl) descEl.textContent = "A colação de grau foi celebrada com sucesso no Centro de Eventos Unilasalle. Parabéns a todos os novos tecnólogos!";
+      if (linkEl) linkEl.style.display = "none";
+      document.getElementById("cd-days").textContent = "00";
+      document.getElementById("cd-hours").textContent = "00";
+      document.getElementById("cd-mins").textContent = "00";
+      document.getElementById("cd-secs").textContent = "00";
+      return;
     }
+
+    // Quando troca de marco automaticamente, atualiza títulos, descritivos e cards
+    if (marco.id !== lastMarcoId) {
+      lastMarcoId = marco.id;
+      if (titleEl) titleEl.textContent = marco.titulo;
+      if (descEl) descEl.textContent = marco.descricao;
+      if (linkEl) {
+        linkEl.href = marco.linkAcao || "#cronograma";
+        linkEl.style.display = "inline-flex";
+      }
+      updateNextEventStat(marco);
+    }
+
+    const targetMs = new Date(marco.dataAlvo).getTime();
+    const diff = Math.max(0, targetMs - now);
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
