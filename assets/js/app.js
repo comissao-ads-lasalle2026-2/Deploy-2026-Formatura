@@ -860,13 +860,17 @@ function loadStoredPlacar() {
   };
 }
 
+const OFFICIAL_VOTING_API_URL = "https://script.google.com/macros/s/AKfycbwacQ2PdSl5sZOD7qz2gC1PMUBR8Euw0PLmnWe0j6IzFXelQjH7sqKn-9xrDCFTYNo/exec";
+
 function getVotingApiUrl() {
   const localUrl = localStorage.getItem("comissao_voting_api_url");
   if (localUrl && localUrl.trim().length > 0) return localUrl.trim();
-  if (window.GRADUATION_DATA && window.GRADUATION_DATA.meta && window.GRADUATION_DATA.meta.votingApiUrl) {
-    return window.GRADUATION_DATA.meta.votingApiUrl.trim();
+
+  const dataObj = (typeof GRADUATION_DATA !== "undefined") ? GRADUATION_DATA : (typeof window !== "undefined" ? window.GRADUATION_DATA : null);
+  if (dataObj && dataObj.meta && dataObj.meta.votingApiUrl && dataObj.meta.votingApiUrl.trim().length > 0) {
+    return dataObj.meta.votingApiUrl.trim();
   }
-  return "";
+  return OFFICIAL_VOTING_API_URL;
 }
 
 function initVotingSystem() {

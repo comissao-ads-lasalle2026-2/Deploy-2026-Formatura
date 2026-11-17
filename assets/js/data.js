@@ -366,6 +366,11 @@ const GRADUATION_DATA = {
   ]
 };
 
+// Garante disponibilidade global no navegador e em módulos
+if (typeof window !== 'undefined') {
+  window.GRADUATION_DATA = GRADUATION_DATA;
+}
+
 // Se executado em Node.js (para testes do script Python), exportar
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = GRADUATION_DATA;
