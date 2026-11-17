@@ -11,8 +11,9 @@ const GRADUATION_DATA = {
     semestre: "2026/2",
     grupoWhats: "TI + ENGENHARIAS 2026/2 - standart com quadro",
     pacoteEscolhido: "Standard com Quadro (R$ 1.200,00)",
-    ultimaAtualizacao: "17/11/2026 às 10:50",
+    ultimaAtualizacao: "17/11/2026 às 13:50",
     contagemRegressivaAlvo: "2026-11-20T23:59:59-03:00", // Próximo evento crítico: Encerramento da Votação dos Pais
+    contagemRegressivaTitulo: "Contagem Regressiva: Encerramento da Votação do Vídeo dos Pais (20/11 às 23h59)",
     
     // Conexão oficial com a Planilha de Votações no Google Drive (Google Apps Script)
     // Audita voto único por matrícula e consolida o placar em tempo real:
@@ -22,29 +23,29 @@ const GRADUATION_DATA = {
   // Alertas urgentes exibidos no topo da página
   avisosUrgentes: [
     {
-      id: "urgente-apitaco",
+      id: "urgente-votacao",
       tipo: "danger", // danger, warning, info
-      badge: "PRÓXIMA SEGUNDA-FEIRA",
-      titulo: "Apitaço de ADS Confirmado: 16/11 (Segunda) às 19h",
-      descricao: "Chegar na Sala Google às 18h30 (30 min de antecedência). Convidaremos o Paraninfo Prof. Mozart Lemos e a Homenageada Tutora Priscila Gonçalves. Levar apitos próprios!",
-      linkAcao: "#apitaco",
-      textoAcao: "Ver Detalhes do Apitaço"
+      badge: "VOTAÇÃO ABERTA • ATÉ 20/11",
+      titulo: "Escolha do Modelo do Vídeo de Pais: Árvore (Digital) vs Cartaz (Presencial)",
+      descricao: "A comissão precisa definir o modelo em consenso até 20/11 para comunicação à produtora na manhã de 21/11. Registre seu voto oficial!",
+      linkAcao: "#votacao",
+      textoAcao: "Votar Agora na Enquete"
     },
     {
-      id: "urgente-votacao",
-      tipo: "warning",
-      badge: "VOTAÇÃO EM ANDAMENTO",
-      titulo: "Definição do Modelo do Vídeo de Homenagem aos Familiares (Até 20/11)",
-      descricao: "Precisamos decidir em consenso entre todas as engenharias/TI: Modelo Árvore (Digital) ou Modelo Cartaz (Presencial na Prova de Togas).",
-      linkAcao: "#votacao",
-      textoAcao: "Ver Modelos & Votar"
+      id: "concluido-apitaco",
+      tipo: "info",
+      badge: "REALIZADO EM 16/11",
+      titulo: "Apitaço Oficial de ADS Realizado com Sucesso!",
+      descricao: "A turma esteve reunida na Sala Google e entregou os convites oficiais para o Paraninfo Prof. Mozart Lemos e a Homenageada Tutora Priscila Gonçalves.",
+      linkAcao: "#apitaco",
+      textoAcao: "Ver Homenageados"
     }
   ],
 
   // Destaques e estatísticas rápidas
   estatisticas: [
     { label: "Pacote ADS Fechado", valor: "Standard c/ Quadro", detalhe: "R$ 1.200,00" },
-    { label: "Próximo Marco", valor: "Apitaço ADS", detalhe: "16/11 às 19h (Sala Google)" },
+    { label: "Próximo Marco", valor: "Votação dos Pais", detalhe: "Encerra 20/11 (Sexta)" },
     { label: "Prova de Togas", valor: "12/12 Manhã", detalhe: "A partir das 09h" },
     { label: "Colação de Grau", valor: "06/03 às 15h", detalhe: "Ensaio: 03/03 às 19h" }
   ],
@@ -75,9 +76,9 @@ const GRADUATION_DATA = {
       id: 3,
       titulo: "Votação do Modelo do Vídeo de Homenagem",
       data: "13/11 a 20/11/2026",
-      hora: "Até 20/11",
+      hora: "Encerra 20/11 às 23h59",
       status: "atual",
-      badge: "Ação Necessária",
+      badge: "URGENTE • ATÉ 20/11",
       resumo: "Consenso entre os cursos para escolha entre Modelo Árvore (Digital) vs Modelo Cartaz (Presencial na Prova de Togas).",
       focoAds: true
     },
@@ -85,10 +86,10 @@ const GRADUATION_DATA = {
       id: 4,
       titulo: "Apitaço ADS (Convite Paraninfo & Homenageada)",
       data: "16/11/2026",
-      hora: "19:00 (Chegar 18:30)",
-      status: "atual",
-      badge: "IMPERDÍVEL",
-      resumo: "Ponto de encontro na Sala Google. Entrega de convites para Prof. Mozart (Prédio 15, Sala 801) e Tutora Priscila (Prédio 1, 6º andar).",
+      hora: "19:00",
+      status: "concluido",
+      badge: "Concluído",
+      resumo: "Realizado com sucesso na Sala Google. Entrega de convites para Prof. Mozart (Prédio 15, Sala 801) e Tutora Priscila (Prédio 1, 6º andar).",
       focoAds: true
     },
     {

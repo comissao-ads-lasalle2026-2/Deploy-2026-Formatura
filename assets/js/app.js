@@ -157,19 +157,36 @@ function renderStats() {
    4. CONTAGEM REGRESSIVA PARA O PRÓXIMO EVENTO (APITAÇO ADS)
    ========================================================================== */
 function initCountdown() {
-  const targetDateStr = GRADUATION_DATA.meta.contagemRegressivaAlvo;
-  const target = new Date(targetDateStr).getTime();
+  const targetDateStr = (GRADUATION_DATA && GRADUATION_DATA.meta && GRADUATION_DATA.meta.contagemRegressivaAlvo) 
+    ? GRADUATION_DATA.meta.contagemRegressivaAlvo 
+    : "2026-11-20T23:59:59-03:00";
+  let target = new Date(targetDateStr).getTime();
+  const labelEl = document.getElementById("countdown-title-text");
 
   function update() {
     const now = new Date().getTime();
-    const diff = target - now;
+    let diff = target - now;
 
+    // Se já passou do prazo da votação dos pais (20/11), transiciona automaticamente para a Prova de Togas (12/12)
     if (diff <= 0) {
-      document.getElementById("cd-days").textContent = "00";
-      document.getElementById("cd-hours").textContent = "00";
-      document.getElementById("cd-mins").textContent = "00";
-      document.getElementById("cd-secs").textContent = "00";
-      return;
+      const togaDate = new Date("2026-12-12T09:00:00-03:00").getTime();
+      if (now < togaDate) {
+        target = togaDate;
+        diff = togaDate - now;
+        if (labelEl) {
+          labelEl.textContent = "Contagem Regressiva para a Prova de Togas no Campus (12/12 às 09h)";
+        }
+      } else {
+        document.getElementById("cd-days").textContent = "00";
+        document.getElementById("cd-hours").textContent = "00";
+        document.getElementById("cd-mins").textContent = "00";
+        document.getElementById("cd-secs").textContent = "00";
+        return;
+      }
+    } else {
+      if (labelEl && GRADUATION_DATA && GRADUATION_DATA.meta && GRADUATION_DATA.meta.contagemRegressivaTitulo) {
+        labelEl.textContent = GRADUATION_DATA.meta.contagemRegressivaTitulo;
+      }
     }
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
