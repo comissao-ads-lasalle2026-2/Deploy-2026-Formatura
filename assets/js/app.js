@@ -860,10 +860,19 @@ function loadStoredPlacar() {
   };
 }
 
+function getVotingApiUrl() {
+  const localUrl = localStorage.getItem("comissao_voting_api_url");
+  if (localUrl && localUrl.trim().length > 0) return localUrl.trim();
+  if (window.GRADUATION_DATA && window.GRADUATION_DATA.meta && window.GRADUATION_DATA.meta.votingApiUrl) {
+    return window.GRADUATION_DATA.meta.votingApiUrl.trim();
+  }
+  return "";
+}
+
 function initVotingSystem() {
   const cfgInput = document.getElementById("cfg-voting-script-url");
-  const savedUrl = localStorage.getItem("comissao_voting_api_url") || "";
-  if (cfgInput) cfgInput.value = savedUrl;
+  const effectiveUrl = getVotingApiUrl();
+  if (cfgInput) cfgInput.value = effectiveUrl;
 
   // Carrega placar persistente ou reconstrói a partir do voto do formando
   currentPlacar = loadStoredPlacar();
@@ -888,8 +897,15 @@ window.selectPollOption = function(choice) {
 };
 
 async function fetchCurrentPlacar() {
-  const apiUrl = localStorage.getItem("comissao_voting_api_url");
-  if (!apiUrl) return;
+  const apiUrl = getVotingApiUrl();
+  const connBadge = document.getElementById("voting-cloud-status");
+
+  if (!apiUrl) {
+    if (connBadge) {
+      connBadge.innerHTML = `<span style="color:var(--accent-amber); font-size:0.75rem;">⚠️ Modo Local (Planilha Google não vinculada no código)</span>`;
+    }
+    return;
+  }
 
   try {
     const res = await fetch(`${apiUrl}?enqueteId=homenagem-familiares`);
@@ -900,9 +916,12 @@ async function fetchCurrentPlacar() {
         localStorage.setItem("ads_poll_placar", JSON.stringify(currentPlacar));
         renderPlacarUI(currentPlacar);
       }
+      if (connBadge) {
+        connBadge.innerHTML = `<span style="color:var(--accent-emerald); font-size:0.75rem;">● Conectado à Planilha Oficial Google Drive</span>`;
+      }
     }
   } catch (err) {
-    // Mantém placar local se offline
+    console.warn("API de votação remota inacessível no momento, mantendo dados locais:", err);
   }
 }
 
@@ -966,10 +985,12 @@ window.handleCastVote = async function(event) {
   btnSubmit.innerHTML = "⏳ Gravando voto...";
   if (statusMsg) statusMsg.textContent = "Validando dados...";
 
-  const apiUrl = localStorage.getItem("comissao_voting_api_url");
+  const apiUrl = getVotingApiUrl();
+  let apiSucceeded = false;
 
   if (apiUrl) {
     try {
+      if (statusMsg) statusMsg.textContent = "Gravando na Planilha Google...";
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -993,18 +1014,21 @@ window.handleCastVote = async function(event) {
 
       if (result.placar) {
         currentPlacar = result.placar;
+        apiSucceeded = true;
       }
     } catch (e) {
       console.warn("API remota indisponível, computando voto localmente:", e);
     }
   }
 
-  // Registra confirmação local e atualiza placar
-  if (choice === "arvore") currentPlacar.arvore++;
-  else currentPlacar.cartaz++;
-  currentPlacar.total = currentPlacar.arvore + currentPlacar.cartaz;
-  currentPlacar.pctArvore = Math.round((currentPlacar.arvore / currentPlacar.total) * 100);
-  currentPlacar.pctCartaz = 100 - currentPlacar.pctArvore;
+  // Se não foi computado pela API remota, computa localmente como fallback
+  if (!apiSucceeded) {
+    if (choice === "arvore") currentPlacar.arvore++;
+    else currentPlacar.cartaz++;
+    currentPlacar.total = currentPlacar.arvore + currentPlacar.cartaz;
+    currentPlacar.pctArvore = Math.round((currentPlacar.arvore / currentPlacar.total) * 100);
+    currentPlacar.pctCartaz = 100 - currentPlacar.pctArvore;
+  }
 
   // Persiste tanto o voto quanto o placar atualizado
   localStorage.setItem("ads_vote_familiares", JSON.stringify({ nome, matricula, choice }));

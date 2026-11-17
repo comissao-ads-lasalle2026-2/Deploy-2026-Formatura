@@ -11,8 +11,12 @@ const GRADUATION_DATA = {
     semestre: "2026/2",
     grupoWhats: "TI + ENGENHARIAS 2026/2 - standart com quadro",
     pacoteEscolhido: "Standard com Quadro (R$ 1.200,00)",
-    ultimaAtualizacao: "13/11/2026 às 15:00",
-    contagemRegressivaAlvo: "2026-11-16T18:30:00-03:00" // Próximo evento: Apitaço ADS
+    ultimaAtualizacao: "17/11/2026 às 10:50",
+    contagemRegressivaAlvo: "2026-11-20T23:59:59-03:00", // Próximo evento crítico: Encerramento da Votação dos Pais
+    
+    // Conexão oficial com a Planilha de Votações no Google Drive (Google Apps Script)
+    // Audita voto único por matrícula e consolida o placar em tempo real:
+    votingApiUrl: "https://script.google.com/macros/s/AKfycbwacQ2PdSl5sZOD7qz2gC1PMUBR8Euw0PLmnWe0j6IzFXelQjH7sqKn-9xrDCFTYNo/exec"
   },
 
   // Alertas urgentes exibidos no topo da página

@@ -315,8 +315,11 @@
 
         <!-- PLACAR AO VIVO DA TURMA -->
         <div class="poll-results-card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-            <h5 style="font-size:0.95rem; font-weight:700; color:var(--text-primary);">📊 Placar Parcial da Turma</h5>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;">
+            <div>
+              <h5 style="font-size:0.95rem; font-weight:700; color:var(--text-primary); margin:0;">📊 Placar Parcial da Turma</h5>
+              <div id="voting-cloud-status" style="margin-top:0.2rem;"></div>
+            </div>
             <span id="poll-total-votes" style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">Carregando votos...</span>
           </div>
 
