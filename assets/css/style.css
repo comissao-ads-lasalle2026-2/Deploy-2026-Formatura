@@ -2273,3 +2273,142 @@ input, button, select, textarea {
     height: 75px;
   }
 }
+
+/* ==========================================================================
+   CENTRAL DE DOCUMENTOS OFICIAIS & ARQUIVOS PARA DOWNLOAD
+   ========================================================================== */
+.docs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.doc-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  background: var(--card-bg, rgba(15, 23, 42, 0.75));
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.doc-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(6, 182, 212, 0.45);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 0 15px -2px rgba(6, 182, 212, 0.2);
+}
+
+.doc-card.doc-featured {
+  border-color: rgba(6, 182, 212, 0.35);
+  background: linear-gradient(145deg, rgba(6, 182, 212, 0.05) 0%, rgba(15, 23, 42, 0.85) 100%);
+}
+
+.doc-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.doc-icon {
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+.doc-format-pill {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-sm);
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.doc-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.doc-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.doc-featured-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.18rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--accent-emerald);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  white-space: nowrap;
+}
+
+.doc-desc {
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.15rem;
+}
+
+.doc-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  padding-top: 0.75rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  margin-bottom: 1.25rem;
+}
+
+.doc-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.doc-actions-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: auto;
+}
+
+.doc-btn {
+  flex: 1;
+  justify-content: center;
+  font-size: 0.82rem;
+  padding: 0.55rem 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+@media (max-width: 600px) {
+  .docs-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .doc-card {
+    padding: 1.15rem;
+  }
+}

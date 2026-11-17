@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTimeline("ads"); // Default: foco em ADS
   renderFeed("todos");
   renderMediaGuide();
+  renderDocuments();
   renderFaq();
   renderContacts();
   initFilterTabs();
@@ -396,9 +397,44 @@ function renderFeed(filter = "todos") {
 function renderMediaGuide() {
   const container = document.getElementById("media-guide-container");
   const midia = GRADUATION_DATA.regrasMidia;
+  const links = GRADUATION_DATA.meta && GRADUATION_DATA.meta.linksProdutora ? GRADUATION_DATA.meta.linksProdutora : null;
+  const pt = GRADUATION_DATA.provaToga;
   if (!container || !midia) return;
 
   container.innerHTML = `
+    <!-- Auto-Cadastro e Acesso ao Portal SP Produtora -->
+    <div class="glass-panel guide-card" style="border-color: rgba(6,182,212,0.4); background: linear-gradient(135deg, rgba(6,182,212,0.08) 0%, rgba(15,23,42,0.85) 100%);">
+      <div class="guide-icon" style="background: rgba(6,182,212,0.2); color: var(--accent-cyan);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
+        <h4 class="guide-title" style="color: var(--accent-cyan); margin-bottom:0;">Auto-Cadastro no Sistema SP</h4>
+        <span style="background:rgba(6,182,212,0.2); color:var(--accent-cyan); font-size:0.75rem; padding:0.15rem 0.5rem; border-radius:var(--radius-sm); font-weight:700;">OFICIAL TURMA</span>
+      </div>
+      <p class="guide-desc">Link oficial e individual da turma para registro dos formandos de ADS.</p>
+      
+      <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin-bottom:1rem;">
+        <p>• <strong>1º Passo:</strong> Se você ainda não tem usuário na SP Produtora, crie sua conta primeiro.</p>
+        <p>• <strong>2º Passo:</strong> Acesse o link de auto-cadastro da turma com seu login para vincular seu perfil à formatura de ADS.</p>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:0.5rem;">
+        ${links ? `
+          <a href="${links.autoCadastroTurma}" target="_blank" rel="noopener" class="btn-primary" style="justify-content:center; font-size:0.85rem;">
+            🔗 Auto-Cadastro da Turma ADS ↗
+          </a>
+          <div style="display:flex; gap:0.5rem;">
+            <a href="${links.criarConta}" target="_blank" rel="noopener" class="btn-secondary" style="flex:1; justify-content:center; font-size:0.8rem;">
+              Criar Conta (Sign Up) ↗
+            </a>
+            <a href="${links.login}" target="_blank" rel="noopener" class="btn-secondary" style="flex:1; justify-content:center; font-size:0.8rem;">
+              Fazer Login ↗
+            </a>
+          </div>
+        ` : ""}
+      </div>
+    </div>
+
     <!-- Música de Entrada -->
     <div class="glass-panel guide-card">
       <div class="guide-icon">
@@ -442,20 +478,22 @@ function renderMediaGuide() {
       </div>
     </div>
 
-    <!-- Prova de Togas & Família -->
+    <!-- Prova de Togas & Family Day Estúdio -->
     <div class="glass-panel guide-card">
       <div class="guide-icon">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
       </div>
-      <h4 class="guide-title">Prova de Toga & Fotógrafo Particular</h4>
-      <p class="guide-desc">Marcado para <strong>12/12/2026</strong> pela manhã no campus.</p>
+      <h4 class="guide-title">Prova de Toga & Family Day (Estúdio SP)</h4>
+      <p class="guide-desc">Marcado para <strong>${pt ? pt.data : "12/12/2026"}</strong> pela manhã no campus.</p>
       
       <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
-        <p>• <strong>Convidados:</strong> Até 8 pessoas por formando.</p>
-        <p>• <strong>Family Day (Estúdio SP):</strong> Até 10 familiares + 1 pet (agendar via WhatsApp: 51 98210-0021).</p>
+        <p>• <strong>No Campus (12/12):</strong> Até 8 convidados por formando. <span style="color:var(--accent-rose); font-weight:700;">Animais são PROIBIDOS no campus.</span></p>
+        <p>• <strong>Family Day (Estúdio SP):</strong> Duração de 1 hora, permite até 10 familiares + 01 pet (incluso 5 fotos digitais tratadas).</p>
+        <p>• <strong>Local Estúdio:</strong> Rua Silva Jardim, 151 - Bairro Bela Vista (Porto Alegre).</p>
+        <p>• <strong>Agendamento:</strong> WhatsApp (51) 98210-0021.</p>
       </div>
 
-      <div style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted);">
+      <div style="margin-top: 0.85rem; font-size: 0.8rem; color: var(--text-muted);">
         <strong style="color:var(--accent-amber);">Regras do Fotógrafo Particular:</strong>
         <ul style="padding-left:1.2rem; margin-top:0.35rem;">
           <li>Prioridade absoluta aos fotógrafos da produtora.</li>
@@ -465,6 +503,60 @@ function renderMediaGuide() {
       </div>
     </div>
   `;
+}
+
+/* ==========================================================================
+   10.1. CENTRAL DE DOCUMENTOS OFICIAIS & ARQUIVOS PARA DOWNLOAD
+   ========================================================================== */
+function renderDocuments() {
+  const container = document.getElementById("documents-container");
+  if (!container) return;
+
+  const docs = GRADUATION_DATA.documentosOficiais || [];
+  if (docs.length === 0) {
+    container.innerHTML = `
+      <div class="glass-panel" style="padding:2.5rem; text-align:center; color:var(--text-secondary);">
+        <p style="font-size:1.1rem; margin-bottom:0.5rem;">📂 Nenhum documento publicado ainda.</p>
+        <p style="font-size:0.85rem;">Documentos colocados na pasta <code>docs/</code> e registrados aparecerão aqui.</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = docs.map(doc => {
+    const isPdf = doc.formato.toUpperCase() === "PDF";
+    const icon = isPdf ? "📄" : "📝";
+    return `
+      <div class="glass-panel doc-card ${doc.destaque ? 'doc-featured' : ''}">
+        <div class="doc-icon-wrap">
+          <span class="doc-icon">${icon}</span>
+          <span class="doc-format-pill">${doc.formato}</span>
+        </div>
+        <div class="doc-content">
+          <div class="doc-header-row">
+            <h4 class="doc-title">${doc.titulo}</h4>
+            ${doc.destaque ? `<span class="doc-featured-badge">OFICIAL</span>` : ""}
+          </div>
+          <p class="doc-desc">${doc.descricao}</p>
+          <div class="doc-meta-row">
+            <span class="doc-meta-item">📁 ${doc.tamanho}</span>
+            <span class="doc-meta-item">🗓️ ${doc.data}</span>
+            ${doc.emissor ? `<span class="doc-meta-item">🏢 ${doc.emissor}</span>` : ""}
+          </div>
+        </div>
+        <div class="doc-actions-wrap">
+          <a href="${doc.caminho}" target="_blank" rel="noopener" class="btn-primary doc-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            Visualizar
+          </a>
+          <a href="${doc.caminho}" download="${doc.nomeArquivo}" class="btn-secondary doc-btn" title="Baixar arquivo">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Baixar
+          </a>
+        </div>
+      </div>
+    `;
+  }).join("");
 }
 
 /* ==========================================================================
@@ -504,14 +596,17 @@ function renderContacts() {
   container.innerHTML = GRADUATION_DATA.contatos.map(c => `
     <div class="glass-panel contact-card">
       <div class="contact-info">
-        <h4>${c.nome}</h4>
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:0.5rem; margin-bottom:0.25rem;">
+          <h4 style="margin-bottom:0;">${c.nome}</h4>
+          ${c.tag ? `<span style="font-size:0.7rem; font-weight:700; padding:0.15rem 0.45rem; border-radius:var(--radius-sm); background:rgba(6,182,212,0.15); color:var(--accent-cyan); white-space:nowrap;">${c.tag}</span>` : ""}
+        </div>
         <p class="contact-role">${c.papel}</p>
-        ${c.horario ? `<p style="font-size:0.8rem; color:var(--text-muted);">⏰ ${c.horario}</p>` : ""}
+        ${c.horario ? `<p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.25rem;">⏰ ${c.horario}</p>` : ""}
         ${c.whatsappFormatado ? `<p style="font-size:0.85rem; font-weight:600; color:var(--accent-cyan); margin-top:0.35rem;">📱 ${c.whatsappFormatado}</p>` : ""}
       </div>
       <div class="contact-btn">
         <a href="${c.link}" target="_blank" rel="noopener" class="btn-primary" style="width:100%; justify-content:center;">
-          ${c.tipo === "web" ? "Acessar Portal CASA ↗" : "Conversar no WhatsApp 💬"}
+          ${c.tipo === "web" ? (c.link.includes("instagram") ? "Ver Instagram ↗" : "Acessar Portal CASA ↗") : "Conversar no WhatsApp 💬"}
         </a>
       </div>
     </div>

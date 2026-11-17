@@ -17,7 +17,15 @@ const GRADUATION_DATA = {
     
     // Conexão oficial com a Planilha de Votações no Google Drive (Google Apps Script)
     // Audita voto único por matrícula e consolida o placar em tempo real:
-    votingApiUrl: "https://script.google.com/macros/s/AKfycbwacQ2PdSl5sZOD7qz2gC1PMUBR8Euw0PLmnWe0j6IzFXelQjH7sqKn-9xrDCFTYNo/exec"
+    votingApiUrl: "https://script.google.com/macros/s/AKfycbwacQ2PdSl5sZOD7qz2gC1PMUBR8Euw0PLmnWe0j6IzFXelQjH7sqKn-9xrDCFTYNo/exec",
+
+    // Links Oficiais do Sistema da SP Produtora
+    linksProdutora: {
+      autoCadastroTurma: "http://sistema.spprod.com.br/sign/208497d70e1dd38156edd7249f9e70001ade853d",
+      login: "http://sistema.spprod.com.br",
+      criarConta: "http://sistema.spprod.com.br/signup",
+      instagram: "https://instagram.com/sp.produtorars"
+    }
   },
 
   // Alertas urgentes exibidos no topo da página
@@ -300,8 +308,17 @@ const GRADUATION_DATA = {
   provaToga: {
     data: "12 de Dezembro de 2026 (Sábado de Manhã)",
     horario: "A partir das 09h00",
-    convidados: "Até 8 pessoas permitidas no campus",
-    familyDayEstudio: "Possibilidade de agendar no Estúdio SP Produtora (permite até 10 familiares e 1 pet). Agendamento via WhatsApp: (51) 98210-0021.",
+    convidadosCampus: "Até 8 pessoas permitidas no campus",
+    localCampus: "Campus Unilasalle - Canoas/RS (PROIBIDA a entrada de animais/pets no campus)",
+    familyDayEstudio: {
+      duracao: "1 hora de ensaio",
+      local: "Estúdio SP Produtora — Rua Silva Jardim, 151, Bairro Bela Vista, Porto Alegre/RS",
+      capacidade: "Até 10 familiares + 01 pet",
+      beneficioIncluso: "5 fotos digitais em alta resolução com tratamento profissional para download",
+      agendamentoWhats: "+5551982100021",
+      agendamentoFormatado: "(51) 98210-0021",
+      regrasPet: "O pet é permitido e muito bem-vindo EXCLUSIVAMENTE na sessão de estúdio da SP Produtora. No dia da Prova de Togas no Campus Unilasalle, animais são proibidos pelo regulamento institucional."
+    },
     regrasFotografoParticular: [
       "Prioridade Absoluta: o cronograma oficial da produtora vem primeiro. O formando NÃO pode se afastar com seu fotógrafo a ponto de perder as fotos coletivas de turma.",
       "Acesso Exclusivo: aos estúdios oficiais montados no local, somente entram os formandos, equipe da produtora e professores.",
@@ -310,6 +327,22 @@ const GRADUATION_DATA = {
       "Locais Autorizados: consultar as áreas livres do campus permitidas para fotógrafos externos."
     ]
   },
+
+  // Central de Documentos Oficiais da Formatura (Arquivos para consulta e download na pasta docs/)
+  documentosOficiais: [
+    {
+      id: "guia-sp-produtora",
+      titulo: "Passo a Passo Oficial SP Produtora (Auto-Cadastro & Family Day)",
+      nomeArquivo: "Guia_Oficial_SP_Produtora_Acesso_FamilyDay.pdf",
+      caminho: "docs/Guia_Oficial_SP_Produtora_Acesso_FamilyDay.pdf",
+      formato: "PDF",
+      tamanho: "167 KB",
+      data: "17/11/2026",
+      emissor: "SP Produtora de Formaturas",
+      descricao: "Guia completo distribuído via e-mail aos formandos. Contém o link oficial de auto-cadastro da nossa turma, criação de usuário no sistema, regras do ensaio Family Day com familiares e pet, e telefones diretos do suporte.",
+      destaque: true
+    }
+  ],
 
   // Feed de Atualizações (extraído do chat do WhatsApp com contexto e data)
   atualizacoesMural: [
@@ -373,6 +406,14 @@ const GRADUATION_DATA = {
   // Perguntas Frequentes (FAQ)
   faq: [
     {
+      pergunta: "Como faço meu auto-cadastro no sistema da SP Produtora?",
+      resposta: "Nossa turma possui um link de auto-cadastro direto e oficial (http://sistema.spprod.com.br/sign/208497d70e1dd38156edd7249f9e70001ade853d). Caso ainda não possua usuário cadastrado no sistema da produtora, clique em 'Criar Conta' (http://sistema.spprod.com.br/signup) antes de acessar o formulário da turma. Se já tiver usuário, basta fazer login normal em http://sistema.spprod.com.br."
+    },
+    {
+      pergunta: "Como funciona o Family Day e posso levar meu pet?",
+      resposta: "O Family Day é um ensaio fotográfico de 1 hora no Estúdio da SP Produtora (Rua Silva Jardim, 151 - Bairro Bela Vista, Porto Alegre/RS) onde você pode levar até 10 familiares e 01 pet. Inclui 5 fotos digitais tratadas para download. O agendamento é feito pelo WhatsApp (51) 98210-0021. ATENÇÃO: Pets são permitidos EXCLUSIVAMENTE no estúdio da produtora; no dia da Prova de Togas no Campus Unilasalle a entrada de animais é expressamente proibida pelas normas da universidade."
+    },
+    {
       pergunta: "Como funciona o Modelo Cartaz do vídeo de homenagem? Precisa ser físico ou digital?",
       resposta: "O Modelo Cartaz exige obrigatoriamente um material FÍSICO e IMPRESSO em mãos no tamanho de uma folha A3 (29,7 x 42 cm) levado no dia da Prova de Togas (12/12). A gravação é presencial, com o formando de toga segurando a folha. Pode ser feito no Canva e impresso em gráfica rápida, ou colagem manual com fotos. Não é aceito arquivo no celular. Já o Modelo Árvore é 100% digital (apenas upload de JPG no portal até 24/01/2027, sem gravação presencial e sem impressão)."
     },
@@ -394,7 +435,7 @@ const GRADUATION_DATA = {
     },
     {
       pergunta: "Onde posso tirar dúvidas sobre cobrança ou boletos?",
-      resposta: "Dúvidas financeiras e boletos devem ser tratados diretamente com o CASA da Unilasalle via ticket em casa.unilasalle.edu.br respondendo ao e-mail do protocolo de formatura."
+      resposta: "Dúvidas financeiras e boletos do pacote institucional devem ser tratados no CASA da Unilasalle via ticket em casa.unilasalle.edu.br. Para contratação de pacotes de fotos e produtos extras da produtora, o contato é direto com a Cleusa da SP Produtora no WhatsApp (51) 99456-7057."
     }
   ],
 
@@ -406,21 +447,50 @@ const GRADUATION_DATA = {
       whatsapp: "+555195719015",
       whatsappFormatado: "(51) 9571-9015",
       horario: "Segunda a Sexta, das 9h às 18h",
-      link: "https://wa.me/555195719015"
+      link: "https://wa.me/555195719015",
+      tag: "Unilasalle"
     },
     {
-      nome: "SP Produtora (Estúdio / Family Day)",
-      papel: "Fotos de toga, agendamento de estúdio e portal",
+      nome: "Luana — Suporte Portal SP Produtora",
+      papel: "Dúvidas de cadastro, acesso ao sistema e upload de músicas/fotos",
+      whatsapp: "+555133122400",
+      whatsappFormatado: "(51) 3312-2400 (Fone / Whats)",
+      horario: "Horário comercial",
+      link: "https://wa.me/555133122400",
+      tag: "SP Produtora"
+    },
+    {
+      nome: "Cleusa — Financeiro SP Produtora",
+      papel: "Contratação de pacotes de formandos, fotos extras e produtos",
+      whatsapp: "+5551994567057",
+      whatsappFormatado: "(51) 99456-7057",
+      horario: "Horário comercial",
+      link: "https://wa.me/5551994567057",
+      tag: "Financeiro SP"
+    },
+    {
+      nome: "Estúdio SP Produtora (Family Day)",
+      papel: "Agendamento de ensaios de estúdio com família e pet",
       whatsapp: "+5551982100021",
       whatsappFormatado: "(51) 98210-0021",
-      horario: "Horário comercial",
-      link: "https://wa.me/5551982100021"
+      horario: "Segunda a Sábado com agendamento",
+      link: "https://wa.me/5551982100021",
+      tag: "Estúdio SP"
+    },
+    {
+      nome: "Instagram Oficial SP Produtora",
+      papel: "Portfólio de formaturas, coberturas e novidades",
+      link: "https://instagram.com/sp.produtorars",
+      whatsappFormatado: "@sp.produtorars",
+      tipo: "web",
+      tag: "Redes Sociais"
     },
     {
       nome: "Portal CASA Unilasalle",
-      papel: "Abertura de requerimentos, tickets e financeiro",
+      papel: "Abertura de requerimentos, tickets e financeiro institucional",
       link: "https://casa.unilasalle.edu.br/hc/pt-br/requests/new",
-      tipo: "web"
+      tipo: "web",
+      tag: "Unilasalle"
     }
   ]
 };
