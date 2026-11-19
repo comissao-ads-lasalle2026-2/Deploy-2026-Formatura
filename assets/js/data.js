@@ -11,7 +11,7 @@ const GRADUATION_DATA = {
     semestre: "2026/2",
     grupoWhats: "TI + ENGENHARIAS 2026/2 - standart com quadro",
     pacoteEscolhido: "Standard com Quadro (R$ 1.200,00)",
-    ultimaAtualizacao: "17/11/2026 às 13:50",
+    ultimaAtualizacao: "19/11/2026 às 11:15",
     contagemRegressivaAlvo: "2026-11-20T23:59:59-03:00", // Próximo evento crítico: Encerramento da Votação dos Pais
     contagemRegressivaTitulo: "Contagem Regressiva: Encerramento da Votação do Vídeo dos Pais (20/11 às 23h59)",
     
@@ -33,9 +33,9 @@ const GRADUATION_DATA = {
     {
       id: "urgente-votacao",
       tipo: "danger", // danger, warning, info
-      badge: "VOTAÇÃO ABERTA • ATÉ 20/11",
-      titulo: "Escolha do Modelo do Vídeo de Pais: Árvore (Digital) vs Cartaz (Presencial)",
-      descricao: "A comissão precisa definir o modelo em consenso até 20/11 para comunicação à produtora na manhã de 21/11. Registre seu voto oficial!",
+      badge: "VOTAÇÃO ABERTA • ENCERRA 20/11",
+      titulo: "Vídeo de Homenagem: Cartaz Lidera por 4 a 3 no Placar Geral da Solenidade!",
+      descricao: "Com os votos dos outros cursos de Engenharias e TI, o Modelo Cartaz está vencendo por 4 a 3. O posicionamento de ADS definirá a escolha oficial da nossa formatura. Registre seu voto!",
       linkAcao: "#votacao",
       textoAcao: "Votar Agora na Enquete"
     },
@@ -251,6 +251,25 @@ const GRADUATION_DATA = {
   votacaoVideo: {
     prazo: "Até dia 20/11/2026 (Definição pela manhã de 21/11)",
     tipoDecisao: "Consenso geral entre todos os cursos da nossa solenidade (TI + Engenharias)",
+    placarGeralSolenidade: {
+      atualizadoEm: "19/11/2026 às 10:07 (Chat Oficial WhatsApp)",
+      totalCursosVotantes: 8,
+      status: "Disputa acirrada entre as turmas: Modelo Cartaz lidera por 4 a 3. O voto de ADS definirá se teremos empate ou vitória do Cartaz!",
+      arvore: [
+        "Engenharia de Produção",
+        "Engenharia Mecânica",
+        "Engenharia Elétrica"
+      ],
+      cartaz: [
+        "Gestão de TI",
+        "Ciência de Dados",
+        "Ciência da Computação",
+        "Engenharia Civil"
+      ],
+      pendente: [
+        "Análise e Desenvolvimento de Sistemas (ADS)"
+      ]
+    },
     opcoes: [
       {
         id: "arvore",
@@ -358,6 +377,39 @@ const GRADUATION_DATA = {
 
   // Feed de Atualizações (extraído do chat do WhatsApp com contexto e data)
   atualizacoesMural: [
+    {
+      id: "att-1911-votacao",
+      data: "19/11/2026",
+      hora: "10:07",
+      autor: "Comissão Geral Solenidade",
+      tag: "Votação",
+      titulo: "Placar Geral dos Cursos: Modelo Cartaz Lidera por 4 a 3 (ADS Decide!)",
+      conteudo: "Com a adesão da Engenharia Civil, o Modelo Cartaz atingiu 4 votos (Gestão de TI, Ciência de Dados, Ciência da Computação, Eng. Civil) contra 3 votos do Modelo Árvore (Eng. Produção, Eng. Mecânica, Eng. Elétrica). Análise e Desenvolvimento de Sistemas (ADS) é o último curso a votar até 20/11 para definir o consenso oficial da formatura.",
+      linkWhats: "#votacao",
+      relevanteAds: true
+    },
+    {
+      id: "att-1911-unilasalle",
+      data: "19/11/2026",
+      hora: "09:41",
+      autor: "Setor de Eventos Unilasalle",
+      tag: "Unilasalle",
+      titulo: "Esclarecimentos da Unilasalle: Prova de Togas, Pets e Vestimenta",
+      conteudo: "A Unilasalle reiterou que é proibida a entrada de animais no campus durante a Prova de Togas. Orientações completas de vestimenta recomendada, horário exato de chegada dos familiares e a forma de disponibilização das fotos oficiais serão encaminhadas na próxima semana.",
+      linkWhats: "#midia",
+      relevanteAds: true
+    },
+    {
+      id: "att-1811-paraninfos",
+      data: "18/11/2026",
+      hora: "11:56",
+      autor: "Setor de Eventos Unilasalle",
+      tag: "Unilasalle",
+      titulo: "Oficialização dos Convites a Paraninfos e Homenageados",
+      conteudo: "O Setor de Eventos reforçou a importância de todos os cursos formalizarem os convites aos seus professores homenageados e paraninfos, colocando-se à disposição para auxiliar com e-mails e contatos institucionais dos docentes.",
+      linkWhats: "#apitaco",
+      relevanteAds: true
+    },
     {
       id: "att-1311",
       data: "13/11/2026",

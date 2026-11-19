@@ -328,7 +328,54 @@ function renderVoting() {
   const dados = GRADUATION_DATA.votacaoVideo;
   if (!container || !dados) return;
 
-  container.innerHTML = dados.opcoes.map(opcao => `
+  const sol = dados.placarGeralSolenidade;
+  const solHtml = sol ? `
+    <div class="glass-panel" style="grid-column: 1 / -1; padding: 1.25rem 1.5rem; border-color: rgba(6,182,212,0.3); background: linear-gradient(135deg, rgba(6,182,212,0.06) 0%, rgba(15,23,42,0.85) 100%); margin-bottom: 0.5rem; border-radius: var(--radius-lg);">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.75rem;">
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+          <span style="font-size:1.25rem;">🌐</span>
+          <h4 style="margin:0; font-size:1.02rem; font-weight:700; color:var(--accent-cyan);">Placar Geral da Solenidade (Outros Cursos de TI + Engenharias)</h4>
+        </div>
+        <span style="font-size:0.75rem; color:var(--text-muted); background:rgba(255,255,255,0.05); padding:0.2rem 0.55rem; border-radius:var(--radius-sm);">
+          Atualizado via WhatsApp: ${sol.atualizadoEm}
+        </span>
+      </div>
+      <p style="font-size:0.86rem; color:var(--text-secondary); margin-bottom:1rem; line-height:1.5;">
+        ${sol.status}
+      </p>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap:1rem;">
+        <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); border-radius:var(--radius-md); padding:0.85rem;">
+          <div style="display:flex; justify-content:space-between; font-weight:700; font-size:0.85rem; color:var(--accent-emerald); margin-bottom:0.4rem;">
+            <span>🌳 Modelo Árvore (Digital)</span>
+            <span>${sol.arvore.length} cursos</span>
+          </div>
+          <ul style="margin:0; padding-left:1.1rem; font-size:0.8rem; color:var(--text-secondary); line-height:1.6;">
+            ${sol.arvore.map(c => `<li>${c}</li>`).join("")}
+          </ul>
+        </div>
+        <div style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:var(--radius-md); padding:0.85rem;">
+          <div style="display:flex; justify-content:space-between; font-weight:700; font-size:0.85rem; color:var(--accent-amber); margin-bottom:0.4rem;">
+            <span>📜 Modelo Cartaz (Presencial)</span>
+            <span>${sol.cartaz.length} cursos</span>
+          </div>
+          <ul style="margin:0; padding-left:1.1rem; font-size:0.8rem; color:var(--text-secondary); line-height:1.6;">
+            ${sol.cartaz.map(c => `<li>${c}</li>`).join("")}
+          </ul>
+        </div>
+        <div style="background:rgba(6,182,212,0.08); border:1px dashed rgba(6,182,212,0.35); border-radius:var(--radius-md); padding:0.85rem;">
+          <div style="display:flex; justify-content:space-between; font-weight:700; font-size:0.85rem; color:var(--accent-cyan); margin-bottom:0.4rem;">
+            <span>⚖️ Fiel da Balança</span>
+            <span>Votação em Aberto</span>
+          </div>
+          <ul style="margin:0; padding-left:1.1rem; font-size:0.8rem; color:var(--text-secondary); line-height:1.6;">
+            ${sol.pendente.map(c => `<li><strong>${c}</strong> (Definição até 20/11)</li>`).join("")}
+          </ul>
+        </div>
+      </div>
+    </div>
+  ` : "";
+
+  container.innerHTML = solHtml + dados.opcoes.map(opcao => `
     <div class="glass-panel voting-card">
       <div>
         <span class="voting-tag">Opção em Votação</span>
