@@ -2412,3 +2412,23 @@ input, button, select, textarea {
     padding: 1.15rem;
   }
 }
+
+.btn-refresh-placar {
+  transition: all 0.2s ease;
+}
+
+.btn-refresh-placar:hover {
+  background: rgba(6, 182, 212, 0.15) !important;
+  border-color: rgba(6, 182, 212, 0.4) !important;
+  color: var(--accent-cyan) !important;
+}
+
+.btn-refresh-placar.spinning span {
+  display: inline-block;
+  animation: spin-refresh 0.8s linear infinite;
+}
+
+@keyframes spin-refresh {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

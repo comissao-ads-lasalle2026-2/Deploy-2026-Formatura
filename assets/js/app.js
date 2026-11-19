@@ -1029,7 +1029,22 @@ function initVotingSystem() {
   // Renderiza imediatamente com porcentagens visíveis
   renderPlacarUI(currentPlacar);
   fetchCurrentPlacar();
+
+  // Sincronização periódica automática em tempo real a cada 15 segundos
+  if (!window._votingPollingInterval) {
+    window._votingPollingInterval = setInterval(() => {
+      fetchCurrentPlacar(false);
+    }, 15000);
+  }
 }
+
+window.refreshPlacarManually = async function() {
+  const btn = document.querySelector(".btn-refresh-placar");
+  if (btn) btn.classList.add("spinning");
+  await fetchCurrentPlacar(true);
+  if (btn) btn.classList.remove("spinning");
+  showToast("📊 Placar atualizado com a Planilha Google!");
+};
 
 window.selectPollOption = function(choice) {
   document.querySelectorAll(".poll-option-card").forEach(c => c.classList.remove("selected"));
@@ -1039,7 +1054,7 @@ window.selectPollOption = function(choice) {
   if (radio) radio.checked = true;
 };
 
-async function fetchCurrentPlacar() {
+async function fetchCurrentPlacar(forceToast = false) {
   const apiUrl = getVotingApiUrl();
   const connBadge = document.getElementById("voting-cloud-status");
 
@@ -1051,10 +1066,10 @@ async function fetchCurrentPlacar() {
   }
 
   try {
-    const res = await fetch(`${apiUrl}?enqueteId=homenagem-familiares`);
+    const res = await fetch(`${apiUrl}?enqueteId=homenagem-familiares&t=${Date.now()}`);
     if (res.ok) {
       const data = await res.json();
-      if (data && data.placar && data.placar.total > 0) {
+      if (data && data.placar && typeof data.placar.total === "number") {
         currentPlacar = data.placar;
         localStorage.setItem("ads_poll_placar", JSON.stringify(currentPlacar));
         renderPlacarUI(currentPlacar);

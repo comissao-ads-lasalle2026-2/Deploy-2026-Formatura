@@ -327,8 +327,13 @@
         <div class="poll-results-card">
           <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;">
             <div>
-              <h5 style="font-size:0.95rem; font-weight:700; color:var(--text-primary); margin:0;">📊 Placar Parcial da Turma</h5>
-              <div id="voting-cloud-status" style="margin-top:0.2rem;"></div>
+              <div style="display:flex; align-items:center; gap:0.6rem;">
+                <h5 style="font-size:0.95rem; font-weight:700; color:var(--text-primary); margin:0;">📊 Placar Parcial da Turma</h5>
+                <button type="button" onclick="refreshPlacarManually()" class="btn-refresh-placar" title="Recarregar placar da planilha agora" style="background:rgba(255,255,255,0.06); border:1px solid var(--border-color); color:var(--text-secondary); border-radius:var(--radius-sm); padding:0.2rem 0.5rem; font-size:0.75rem; cursor:pointer; display:inline-flex; align-items:center; gap:0.3rem;">
+                  <span>🔄</span> Atualizar
+                </button>
+              </div>
+              <div id="voting-cloud-status" style="margin-top:0.25rem;"></div>
             </div>
             <span id="poll-total-votes" style="font-size:0.8rem; color:var(--text-muted); font-weight:600;">Carregando votos...</span>
           </div>
@@ -873,8 +878,8 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="assets/js/data.js?v=20261117_5"></script>
-  <script src="assets/js/app.js?v=20261117_5"></script>
-  <script src="assets/js/arcade.js?v=20261117_5"></script>
+  <script src="assets/js/data.js?v=20261119_1"></script>
+  <script src="assets/js/app.js?v=20261119_1"></script>
+  <script src="assets/js/arcade.js?v=20261119_1"></script>
 </body>
 </html>

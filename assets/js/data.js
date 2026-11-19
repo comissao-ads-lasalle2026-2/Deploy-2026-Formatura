@@ -341,6 +341,18 @@ const GRADUATION_DATA = {
       emissor: "SP Produtora de Formaturas",
       descricao: "Guia completo distribuído via e-mail aos formandos. Contém o link oficial de auto-cadastro da nossa turma, criação de usuário no sistema, regras do ensaio Family Day com familiares e pet, e telefones diretos do suporte.",
       destaque: true
+    },
+    {
+      id: "orientacoes-apitaco",
+      titulo: "Orientações Oficiais do Apitaço de Formatura (Horários & Salas)",
+      nomeArquivo: "Orientacoes_Apitaco_ADS.pdf",
+      caminho: "docs/Orientacoes_Apitaco_ADS.pdf",
+      formato: "PDF",
+      tamanho: "92 KB",
+      data: "17/11/2026",
+      emissor: "Setor de Eventos Unilasalle",
+      descricao: "Diretrizes e cronograma oficial da Unilasalle para a concentração na Sala Google, homenagem aos professores e percurso do apitaço das turmas.",
+      destaque: false
     }
   ],
 
